@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+</head>
+<body>
+    <h3>INDEX</h3>
+    <% for(let i=0; i< listingData.length; i++){ %>
+        <ol style="list-style-type: none;">
+            <li> <%= i+1 %>.<a href="/listing/<%= listingData[i]._id %>"><%= listingData[i].title %></a></li>
+        </ol>
+    <% } %>
+</body>
+</html>
