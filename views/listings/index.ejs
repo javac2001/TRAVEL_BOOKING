@@ -7,6 +7,9 @@
 </head>
 <body>
     <h3>INDEX</h3>
+    <form action="/listing/new" method="get">
+        <button type="submit">CREATE</button>
+    </form>
     <% for(let i=0; i< listingData.length; i++){ %>
         <ol style="list-style-type: none;">
             <li> <%= i+1 %>.<a href="/listing/<%= listingData[i]._id %>"><%= listingData[i].title %></a></li>

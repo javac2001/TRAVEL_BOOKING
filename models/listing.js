@@ -7,9 +7,12 @@ let listingSchema = new Schema({
         required : true
     },
     description : {
+        type : String
+    },
+    image : {
         type : String,
-        default : "https://source.unsplash.com/user/erondu/200x200",
-        set : (v) => v === ""?"https://source.unsplash.com/user/erondu/200x200" : v
+        default : "https://source.unsplash.com/user/erondu/1000x1000",
+        set : (v) => v === ""?"https://source.unsplash.com/user/erondu/1000x1000" : v
     },
     price : {
         type : Number,

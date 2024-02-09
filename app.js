@@ -31,7 +31,21 @@ app.listen(port,()=>{
 app.get("/",(req, res)=>{
     res.send("THIS IS ROOT");
 });
-
+// ===================================CREATE ROUTE
+app.get("/listing/new",(req, res)=>{
+    res.render("./listings/new.ejs");
+})
+app.post("/listing",async(req, res)=>{
+    let listingData = await new Listing(req.body.data);
+    // req.body.data
+    listingData.save()
+    .then(()=>{
+        res.redirect("/listing");
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+})
 // ===================================INDEX ROUTE
 app.get("/listing",async (req, res)=>{
     let listingData = await Listing.find({});
@@ -41,5 +55,6 @@ app.get("/listing",async (req, res)=>{
 app.get("/listing/:id",async (req,res)=>{
     let {id} = req.params;
     let listingData = await Listing.findById(id);
+    console.log(listingData);
     res.render("./listings/show.ejs",{listingData});
 });

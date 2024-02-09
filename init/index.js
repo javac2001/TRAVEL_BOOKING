@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 let Listing = require("../models/listing.js");
 let initData = require("./data.js");
+const data = require('./data.js');
 
 main()
 .then(()=>{
@@ -14,8 +15,18 @@ async function main() {
 
 let initDB = async()=>{
     await Listing.deleteMany({});
-    await Listing.insertMany(initData.data);
-    console.log("Initialization Success");
+    let arr = [];
+    for(let i = 0; i<initData.data.length; i++){
+      arr.push({
+        title : initData.data[i].title,
+        description : initData.data[i].description,
+        image : initData.data[i].image.url,
+        price : initData.data[i].price,
+        location : initData.data[i].location,
+        country : initData.data[i].country
+      });
+    }
+    await Listing.insertMany(arr);
 }
 
 initDB();
