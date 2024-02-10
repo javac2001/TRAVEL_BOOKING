@@ -21,6 +21,9 @@
     <form action="/listing/<%= listingData._id %>/edit" method="get">
         <button>EDIT</button>
     </form>
+    <form action="/listing/<%= listingData._id %>?_method=DELETE" method="post">
+        <button>DELETE</button>
+    </form>
     
     
 </body>
