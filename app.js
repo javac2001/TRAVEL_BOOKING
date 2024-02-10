@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 8080;
 let path = require('path');
-var methodOverride = require('method-override')
+const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 let Listing = require("./models/listing.js");
 
