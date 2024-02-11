@@ -5,6 +5,7 @@ let path = require('path');
 const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 let Listing = require("./models/listing.js");
+const engine = require('ejs-mate');
 
 // ===================================MONGOOSE SETUP
 main()
@@ -17,13 +18,20 @@ async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/wanderland');
 }
 
+
 // ===================================For render EJS file
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"views"));
-// For Parsing Data
+// ===================================For ejs-mate
+app.engine('ejs', engine);
+// ===================================For Parsing 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json());
 app.use(methodOverride('_method'))
+// ===================================For Static files
+app.use(express.static(path.join(__dirname,"public")));
+
+
 
 // ===================================EXPRESS SETUP
 app.listen(port,()=>{
