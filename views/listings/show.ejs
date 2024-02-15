@@ -9,9 +9,6 @@
         <li><b>Location:</b> <%= listingData.location %></li>
         <li><b>Country:</b> <%= listingData.country %></li>
     </ol>
-    <form action="/listing" method="get">
-        <button>HOME</button>
-    </form>
     <form action="/listing/<%= listingData._id %>/edit" method="get">
         <button>EDIT</button>
     </form>
