@@ -108,9 +108,21 @@ textarea {
 .add-btn{
     background-color: #fe424d !important;
     border: none !important;
-    width: 5rem;
+    width: 6rem;
     transition: all 0.3s ease-in-out 0s !important;
 }
+.btn-dark{
+    border: none !important;
+}
 .add-btn:hover{
-    width: 6rem;
+    width: 7rem;
+}
+/* ===================== SHOW ===================== */
+.show-image{
+    height: 30vh;
+}
+.btns{
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: space-between;
 }

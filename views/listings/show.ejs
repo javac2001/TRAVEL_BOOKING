@@ -1,17 +1,40 @@
 <% layout('/layouts/boilerplate') -%>
-<body>
-    <ol style="list-style-type: none;">
-        <li><b>Title:</b> <%= listingData.title %></li>
-        <li><b>Description:</b> <%= listingData.description %></li>
-        <li><b>Image:</b> <a href="<%= listingData.image %>" target="_blank">Click</a></li>
-        <li><b>Price:</b> &#x20B9;<%= listingData.price.toLocaleString('en-IN') %></li>
-        <li><b>Location:</b> <%= listingData.location %></li>
-        <li><b>Country:</b> <%= listingData.country %></li>
-    </ol>
-    <form action="/listing/<%= listingData._id %>/edit" method="get">
-        <button>EDIT</button>
-    </form>
-    <form action="/listing/<%= listingData._id %>?_method=DELETE" method="post">
-        <button>DELETE</button>
-    </form>
-</body>
+
+    <body>
+        <div class="row mt-3">
+            <div class="card col-6 offset-3">
+                <img src="<%= listingData.image %>" class="card-img-top show-image">
+                <div class="card-body">
+                    <p class="card-text">
+                        <b>Title:</b>
+                        <%= listingData.title %>
+                    </p>
+                    <p class="card-text">
+                        <b>Description:</b>
+                        <%= listingData.description %>
+                    </p>
+                    <p class="card-text">
+                        <b>Price:</b>
+                        &#x20B9;<%= listingData.price.toLocaleString('en-IN') %>
+                    </p>
+                    <p class="card-text">
+                        <b>Location:</b>
+                        <%= listingData.location %>
+                    </p>
+                    <p class="card-text">
+                        <b>Country:</b>
+                        <%= listingData.country %>
+                    </p>
+                </div>
+                <div class="btns">
+                    <form action="/listing/<%= listingData._id %>/edit" method="get">
+                        <button class="btn btn-dark add-btn">EDIT</button>
+                    </form>
+                    <form action="/listing/<%= listingData._id %>?_method=DELETE" method="post">
+                        <button class="btn btn-dark">DELETE</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </body>
