@@ -1,39 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
-</head>
+<% layout('/layouts/boilerplate') -%>
 <body>
-    <h3>UPDATE DATA</h3>
-    <form action="/listing/<%= listingData._id %>?_method=PUT" method="post">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="data[title]" value="<%= listingData.title %>">
-        <br>
-        <br>
-        <label for="description">Description</label>
-        <br>
-        <textarea name="data[description]" id="description" cols="30" rows="10"><%= listingData.description %></textarea>
-        <br>
-        <br>
-        <label for="image">Image</label>
-        <input type="text" id="image" name="data[image]" value="<%= listingData.image %>">
-        <br>
-        <br>
-        <label for="price">Price</label>
-        <input type="number" id="price" name="data[price]" value="<%= listingData.price %>">
-        <br>
-        <br>
-        <label for="location">Location</label>
-        <input type="text" id="location" name="data[location]" value="<%= listingData.location %>">
-        <br>
-        <br>
-        <label for="country">Country</label>
-        <input type="text" id="country" name="data[country]" value="<%= listingData.country %>">
-        <br>
-        <br>
-        <button type="submit">UPDATE</button>
-    </form>
+    <div class="row mb-5 mt-3">
+        <div class="col-8 offset-2">
+            <form action="/listing/<%= listingData._id %>?_method=PUT" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" id="title" name="data[title]" class="form-control" value="<%= listingData.title %>">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="data[description]" id="description" cols="30" rows="10" class="form-control"><%= listingData.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="text" id="image" name="data[image]" class="form-control" value="<%= listingData.image %>">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="text" id="price" name="data[price]" class="form-control" value="<%= listingData.price %>">
+                    </div>
+                    <div class="mb-3 col-md-8">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" id="location" name="data[location]" class="form-control" value="<%= listingData.location %>">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" id="country" name="data[country]" class="form-control" value="<%= listingData.country %>">
+                </div>
+                <button type="submit" class="btn btn-dark add-btn">EDIT</button>
+            </form>
+        </div>
+    </div>
 </body>
-</html>
