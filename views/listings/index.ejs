@@ -1,27 +1,24 @@
 <% layout('/layouts/boilerplate') -%>
 
     <body>
-        <h3>INDEX</h3>
         <!-- <form action="/listing/new" method="get">
         <button type="submit">CREATE</button>
     </form> -->
-    <div class="container">
-        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-1">
-            <% for(let i=0; i< listingData.length; i++){ %>
-                <a href="/listing/<%= listingData[i]._id %>" class="listing-link">
-                    <div class="card col">
-                        <img src="<%= listingData[i].image %>" class="card-img-top" alt="..." style="height: 20rem;">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <b><%= listingData[i].title %></b>
-                                <br>
-                                &#x20B9;<%= listingData[i].price.toLocaleString('en-IN') %> / night
-                            </p>
-                        </div>
+    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-1 mt-5">
+        <% for(let i=0; i< listingData.length; i++){ %>
+            <a href="/listing/<%= listingData[i]._id %>" class="listing-link">
+                <div class="card col">
+                    <img src="<%= listingData[i].image %>" class="card-img-top" alt="..." style="height: 20rem;">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= listingData[i].title %></b>
+                            <br>
+                            &#x20B9;<%= listingData[i].price.toLocaleString('en-IN') %> / night
+                        </p>
                     </div>
-                </a>
-                
-            <% } %>
-        </div>
+                </div>
+            </a>
+            
+        <% } %>
     </div>
     </body>
