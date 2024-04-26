@@ -11,6 +11,8 @@ const engine = require('ejs-mate');
 const WrapAsync = require("./utils/wrapAsync.js")
 // Custom Express Error Class
 const ExpressError = require("./utils/ExpressError.js");
+// Joi
+const {dataSchema} = require("./schema.js");
 
 // ===================================MONGOOSE SETUP
 main()
@@ -35,9 +37,16 @@ app.use(express.json());
 app.use(methodOverride('_method'))
 // ===================================For Static files
 app.use(express.static(path.join(__dirname, "public")));
-
-
-
+// ===================================For Schema Validation
+let SchemaValidation = (req, res, next) =>{
+    let {error} = dataSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el) => (el.message)).join(",");
+        throw new ExpressError(400, errMsg);
+    }else{
+        next();
+    }
+}
 // ===================================EXPRESS SETUP
 app.listen(port, () => {
     console.log(`Lisining port ${port}`);
@@ -52,10 +61,8 @@ app.get("/listing/new", (req, res) => {
 })
 app.post(
     "/listing",
+    SchemaValidation,
     WrapAsync( async (req, res, next) => {
-        if(!req.body.data){
-            throw new ExpressError(400, "Send valid data");
-        }
         let listingData =  new Listing(req.body.data);
         await listingData.save();
         res.redirect("/listing");
@@ -78,7 +85,9 @@ app.get("/listing/:id", WrapAsync(
     }
 ));
 // ===================================EDIT ROUTE
-app.get("/listing/:id/edit", WrapAsync(
+app.get("/listing/:id/edit",
+    SchemaValidation,
+    WrapAsync(
     async (req, res) => {
         let { id } = req.params;
         let listingData = await Listing.findById(id);
@@ -126,6 +135,5 @@ app.all("*", (req, res, next) => {
 app.use((err, req, res, next) => {
     let {statusCode = 500 , message = "Something Went Wrong"} = err;
     res.status(statusCode).render("error.ejs",{message});
-    // res.status(statusCode).send(message);
 
 })
