@@ -86,7 +86,6 @@ app.get("/listing/:id", WrapAsync(
 ));
 // ===================================EDIT ROUTE
 app.get("/listing/:id/edit",
-    SchemaValidation,
     WrapAsync(
     async (req, res) => {
         let { id } = req.params;
@@ -94,6 +93,8 @@ app.get("/listing/:id/edit",
         res.render("./listings/edit.ejs", { listingData });
     }
 ))
+
+
 // ===================================UPDATE ROUTE
 app.put("/listing/:id", WrapAsync(
     async (req, res) => {
