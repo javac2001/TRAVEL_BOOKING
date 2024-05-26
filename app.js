@@ -5,6 +5,7 @@ let path = require('path');
 const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 let Listing = require("./models/listing.js");
+let Review = require("./models/review.js");
 const engine = require('ejs-mate');
 
 // WrapAsync

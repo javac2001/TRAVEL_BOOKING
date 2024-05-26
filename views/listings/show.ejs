@@ -3,12 +3,11 @@
     <body>
         <div class="row mt-3">
             <div class="card col-6 offset-3">
+                <h3>
+                    <%= listingData.title %>
+                </h3>
                 <img src="<%= listingData.image %>" class="card-img-top show-image">
                 <div class="card-body">
-                    <p class="card-text">
-                        <b>Title:</b>
-                        <%= listingData.title %>
-                    </p>
                     <p class="card-text">
                         <b>Description:</b>
                         <%= listingData.description %>
@@ -34,7 +33,23 @@
                         <button class="btn btn-dark">DELETE</button>
                     </form>
                 </div>
-                
+                <br>
+                <hr>
+                <br>
+                <div class="card-review">
+                    <h4>Leave a Review</h4>
+                    <form action="" method="post">
+                        <label for="review-range" class="form-label">Rating</label>
+                        <input type="range" name="review[range]" id="review-range" min="1" max="5" class="form-range">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 100px" name="review[description]"></textarea>
+                            <label for="floatingTextarea2">Write a review</label>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-dark add-btn">SUBMIT</button>
+                    </form>
+                </div>
             </div>
         </div>
     </body>
