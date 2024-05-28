@@ -13,7 +13,8 @@ const WrapAsync = require("./utils/wrapAsync.js")
 // Custom Express Error Class
 const ExpressError = require("./utils/ExpressError.js");
 // Joi
-const {dataSchema} = require("./schema.js");
+const {dataSchema, reviewValidationSchema} = require("./schema.js");
+const wrapAsync = require('./utils/wrapAsync.js');
 
 // ===================================MONGOOSE SETUP
 main()
@@ -41,6 +42,15 @@ app.use(express.static(path.join(__dirname, "public")));
 // ===================================For Schema Validation
 let SchemaValidation = (req, res, next) =>{
     let {error} = dataSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el) => (el.message)).join(",");
+        throw new ExpressError(400, errMsg);
+    }else{
+        next();
+    }
+}
+let ReviewSchemaValidation = (req, res, next) =>{
+    let {error} = reviewValidationSchema.validate(req.body);
     if(error){
         let errMsg = error.details.map((el) => (el.message)).join(",");
         throw new ExpressError(400, errMsg);
@@ -127,6 +137,25 @@ app.delete("/listing/:id", WrapAsync(
         res.redirect(`/listing`);
     }
 ));
+
+
+// =================================== REVIEWS ===================================
+// =================================== POST ROUTE
+
+app.post("/listing/:id/reviews",ReviewSchemaValidation, wrapAsync(async(req, res) =>{
+    let {id} = req.params;
+    let listing = await Listing.findById(id);
+    let review = req.body.review;
+    console.log(review);
+    let userReview = await new Review(review);
+    
+    listing.reviews.push(userReview)
+
+    await userReview.save();
+    await listing.save();
+
+    res.redirect(`/listing/${listing._id}`)
+}))
 
 // Error Handling
 

@@ -1,35 +1,36 @@
 const mongoose = require('mongoose');
-const Review = require('./review');
 let Schema = mongoose.Schema;
 
 let listingSchema = new Schema({
-    title : {
-        type : String,
-        required : true
+    title: {
+        type: String,
+        required: true
     },
-    description : {
-        type : String
+    description: {
+        type: String
     },
-    image : {
-        type : String,
-        default : "https://source.unsplash.com/user/erondu/1000x1000",
-        set : (v) => v === ""?"https://source.unsplash.com/user/erondu/1000x1000" : v
+    image: {
+        type: String,
+        default: "https://source.unsplash.com/user/erondu/1000x1000",
+        set: (v) => v === "" ? "https://source.unsplash.com/user/erondu/1000x1000" : v
     },
-    price : {
-        type : Number,
-        default : 0
+    price: {
+        type: Number,
+        default: 0
     },
-    location : {
-        type : String,
+    location: {
+        type: String,
     },
-    country : {
-        type : String
+    country: {
+        type: String
     },
-    reviews : {
-        type : Schema.Types.ObjectId,
-        ref : "Review"
-    }
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ]
 })
 
-let Listing = new mongoose.model("Listing",listingSchema);
+let Listing = new mongoose.model("Listing", listingSchema);
 module.exports = Listing;

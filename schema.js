@@ -11,3 +11,11 @@ module.exports.dataSchema = Joi.object({
         country : Joi.string().required()
     }).required()
 });
+
+
+module.exports.reviewValidationSchema = Joi.object({
+    review : Joi.object({
+        comment : Joi.string().required(),
+        rating : Joi.number().required().min(1).max(5)
+    }).required()
+});

@@ -38,13 +38,14 @@
                 <br>
                 <div class="card-review">
                     <h4>Leave a Review</h4>
-                    <form action="" method="post">
+                    <form action="/listing/<%= listingData._id %>/reviews" method="post" class="needs-validation" novalidate>
                         <label for="review-range" class="form-label">Rating</label>
-                        <input type="range" name="review[range]" id="review-range" min="1" max="5" class="form-range">
+                        <input type="range" name="review[rating]" id="review-range" min="1" max="5" class="form-range">
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                style="height: 100px" name="review[description]"></textarea>
+                                style="height: 100px" name="review[comment]" required></textarea>
                             <label for="floatingTextarea2">Write a review</label>
+                            <div class="invalid-feedback">Please add some review</div>
                         </div>
                         <br>
                         <button type="submit" class="btn btn-dark add-btn">SUBMIT</button>
