@@ -38,7 +38,8 @@
                 <br>
                 <div class="card-review">
                     <h4>Leave a Review</h4>
-                    <form action="/listing/<%= listingData._id %>/reviews" method="post" class="needs-validation" novalidate>
+                    <form action="/listing/<%= listingData._id %>/reviews" method="post" class="needs-validation"
+                        novalidate>
                         <label for="review-range" class="form-label">Rating</label>
                         <input type="range" name="review[rating]" id="review-range" min="1" max="5" class="form-range">
                         <div class="form-floating">
@@ -51,6 +52,16 @@
                         <button type="submit" class="btn btn-dark add-btn">SUBMIT</button>
                     </form>
                 </div>
+                <hr>
+                <h4>All Reviews</h4>
+
+                <ul>
+                    <% for(review of listingData.reviews){ %>
+                        <li>
+                            <%= review.comment %>, <%= review.rating %> Star
+                        </li>
+                        <% } %>
+                </ul>
             </div>
         </div>
     </body>

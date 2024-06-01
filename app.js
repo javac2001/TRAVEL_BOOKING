@@ -90,7 +90,7 @@ app.get("/listing", WrapAsync(
 app.get("/listing/:id", WrapAsync(
     async (req, res) => {
         let { id } = req.params;
-        let listingData = await Listing.findById(id);
+        let listingData = await Listing.findById(id).populate("reviews");
         console.log(listingData);
         res.render("./listings/show.ejs", { listingData });
     }
