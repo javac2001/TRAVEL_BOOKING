@@ -157,6 +157,15 @@ app.post("/listing/:id/reviews",ReviewSchemaValidation, wrapAsync(async(req, res
     res.redirect(`/listing/${listing._id}`)
 }))
 
+// =================================== DELETE ROUTE
+
+app.delete("/listing/:id/reviews/:reviewId",wrapAsync(async(req, res)=>{
+    let {id, reviewId} = req.params;
+    await Listing.findByIdAndUpdate(id,{$pull : {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listing/${id}`);
+}))
+
 // Error Handling
 
 app.all("*", (req, res, next) => {
