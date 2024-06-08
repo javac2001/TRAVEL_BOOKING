@@ -14,7 +14,6 @@ const WrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExpressError.js");
 // Joi
 const {dataSchema, reviewValidationSchema} = require("./schema.js");
-const wrapAsync = require('./utils/wrapAsync.js');
 
 // ===================================MONGOOSE SETUP
 main()
@@ -142,7 +141,7 @@ app.delete("/listing/:id", WrapAsync(
 // =================================== REVIEWS ===================================
 // =================================== POST ROUTE
 
-app.post("/listing/:id/reviews",ReviewSchemaValidation, wrapAsync(async(req, res) =>{
+app.post("/listing/:id/reviews",ReviewSchemaValidation, WrapAsync(async(req, res) =>{
     let {id} = req.params;
     let listing = await Listing.findById(id);
     let review = req.body.review;
@@ -159,7 +158,7 @@ app.post("/listing/:id/reviews",ReviewSchemaValidation, wrapAsync(async(req, res
 
 // =================================== DELETE ROUTE
 
-app.delete("/listing/:id/reviews/:reviewId",wrapAsync(async(req, res)=>{
+app.delete("/listing/:id/reviews/:reviewId",WrapAsync(async(req, res)=>{
     let {id, reviewId} = req.params;
     await Listing.findByIdAndUpdate(id,{$pull : {reviews: reviewId}});
     await Review.findByIdAndDelete(reviewId);
