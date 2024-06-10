@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 let Listing = require("./models/listing.js");
 let Review = require("./models/review.js");
 const engine = require('ejs-mate');
+// ===================================Listing Route
+let listing = require("./routes/listing.js")
 
 // WrapAsync
 const WrapAsync = require("./utils/wrapAsync.js")
@@ -39,15 +41,6 @@ app.use(methodOverride('_method'))
 // ===================================For Static files
 app.use(express.static(path.join(__dirname, "public")));
 // ===================================For Schema Validation
-let SchemaValidation = (req, res, next) =>{
-    let {error} = dataSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el) => (el.message)).join(",");
-        throw new ExpressError(400, errMsg);
-    }else{
-        next();
-    }
-}
 let ReviewSchemaValidation = (req, res, next) =>{
     let {error} = reviewValidationSchema.validate(req.body);
     if(error){
@@ -65,77 +58,11 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
     res.send("THIS IS ROOT");
 });
-// ===================================CREATE ROUTE
-app.get("/listing/new", (req, res) => {
-    res.render("./listings/new.ejs");
-})
-app.post(
-    "/listing",
-    SchemaValidation,
-    WrapAsync( async (req, res, next) => {
-        let listingData =  new Listing(req.body.data);
-        await listingData.save();
-        res.redirect("/listing");
-    })
-)
-// ===================================INDEX ROUTE
-app.get("/listing", WrapAsync(
-    async (req, res) => {
-        let listingData = await Listing.find({});
-        res.render("./listings/index.ejs", { listingData });
-    }
-));
-// ===================================SHOW ROUTE
-app.get("/listing/:id", WrapAsync(
-    async (req, res) => {
-        let { id } = req.params;
-        let listingData = await Listing.findById(id).populate("reviews");
-        console.log(listingData);
-        res.render("./listings/show.ejs", { listingData });
-    }
-));
-// ===================================EDIT ROUTE
-app.get("/listing/:id/edit",
-    WrapAsync(
-    async (req, res) => {
-        let { id } = req.params;
-        let listingData = await Listing.findById(id);
-        res.render("./listings/edit.ejs", { listingData });
-    }
-))
+
+// =================================== Listing ===================================
+app.use("/listing",listing);
 
 
-// ===================================UPDATE ROUTE
-app.put("/listing/:id", WrapAsync(
-    async (req, res) => {
-        let { id } = req.params;
-        if(!req.body.data){
-            throw new ExpressError(400, "Send valid data");
-        }
-        await Listing.findByIdAndUpdate(id, req.body.data)
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        res.redirect(`/listing/${id}`);
-    }
-))
-// ===================================DELETE ROUTE
-app.delete("/listing/:id", WrapAsync(
-    async (req, res) => {
-        let { id } = req.params;
-        await Listing.findByIdAndDelete(id)
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        res.redirect(`/listing`);
-    }
-));
 
 
 // =================================== REVIEWS ===================================
