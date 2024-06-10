@@ -6,7 +6,7 @@ const WrapAsync = require("../utils/wrapAsync.js")
 // Custom Express Error Class
 const ExpressError = require("../utils/ExpressError.js");
 // Joi
-const {dataSchema, reviewValidationSchema} = require("../schema.js");
+const {dataSchema} = require("../schema.js");
 
 
 // ===================================For Schema Validation
