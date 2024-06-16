@@ -5,6 +5,7 @@ let path = require('path');
 const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
+const session = require('express-session')
 // ===================================Listing Route
 let listing = require("./routes/listing.js")
 // ===================================Review Route
@@ -36,7 +37,13 @@ app.use(express.json());
 app.use(methodOverride('_method'))
 // ===================================For Static files
 app.use(express.static(path.join(__dirname, "public")));
-
+// ===================================For Express Session
+const sessionOption = {
+    secret : "mysupersecretcode",
+    resave : false,
+    saveUninitialized: true
+}
+app.use(session(sessionOption));
 // ===================================EXPRESS SETUP
 app.listen(port, () => {
     console.log(`Lisining port ${port}`);
