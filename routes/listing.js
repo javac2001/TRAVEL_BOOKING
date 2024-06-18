@@ -27,6 +27,7 @@ router.get("/new", (req, res) => {
 router.post("/",SchemaValidation,WrapAsync( async (req, res, next) => {
         let listingData =  new Listing(req.body.data);
         await listingData.save();
+        req.flash("success", "New listing created");
         res.redirect("/listing");
     })
 )
@@ -71,6 +72,7 @@ router.put("/:id", WrapAsync(
             .catch((err) => {
                 console.log(err);
             })
+            req.flash("success", "Listing Update Succeed");
         res.redirect(`/listing/${id}`);
     }
 ))
@@ -85,6 +87,7 @@ router.delete("/:id", WrapAsync(
             .catch((err) => {
                 console.log(err);
             })
+            req.flash("success", "Listing Delete Succeed");
         res.redirect(`/listing`);
     }
 ));

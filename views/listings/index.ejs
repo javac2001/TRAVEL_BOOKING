@@ -1,9 +1,6 @@
 <% layout('/layouts/boilerplate') -%>
 
     <body>
-        <!-- <form action="/listing/new" method="get">
-        <button type="submit">CREATE</button>
-    </form> -->
     <div class="row row-cols-lg-4 row-cols-md-3 row-cols-1 mt-5">
         <% for(let i=0; i< listingData.length; i++){ %>
             <a href="/listing/<%= listingData[i]._id %>" class="listing-link">
@@ -18,7 +15,6 @@
                     </div>
                 </div>
             </a>
-            
         <% } %>
     </div>
     </body>

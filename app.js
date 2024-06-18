@@ -5,7 +5,8 @@ let path = require('path');
 const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
-const session = require('express-session')
+const session = require('express-session');
+const flash = require('connect-flash');
 // ===================================Listing Route
 let listing = require("./routes/listing.js")
 // ===================================Review Route
@@ -41,9 +42,16 @@ app.use(express.static(path.join(__dirname, "public")));
 const sessionOption = {
     secret : "mysupersecretcode",
     resave : false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie : {
+        expire : Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge : 7 * 24 * 60 * 60 * 1000,
+        httpOnly : true
+    }
 }
 app.use(session(sessionOption));
+// ===================================FLASH
+app.use(flash());
 // ===================================EXPRESS SETUP
 app.listen(port, () => {
     console.log(`Lisining port ${port}`);
@@ -52,6 +60,11 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
     res.send("THIS IS ROOT");
 });
+
+app.use((req, res, next)=>{
+    res.locals.success = req.flash("success");
+    next();
+})
 
 // =================================== Listing ===================================
 app.use("/listing",listing);
