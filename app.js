@@ -7,10 +7,16 @@ const mongoose = require('mongoose');
 const engine = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+// ===================================USER model
+const User = require('./models/user.js');
 // ===================================Listing Route
-let listing = require("./routes/listing.js")
+let listingRouter = require("./routes/listing.js")
 // ===================================Review Route
-let reviews = require("./routes/reviews.js")
+let reviewsRouter = require("./routes/reviews.js")
+// ===================================User Route
+let userRouter = require("./routes/user.js")
 
 // Custom Express Error Class
 const ExpressError = require("./utils/ExpressError.js");
@@ -49,9 +55,17 @@ const sessionOption = {
         httpOnly : true
     }
 }
+// ===================================SESSION
 app.use(session(sessionOption));
 // ===================================FLASH
 app.use(flash());
+// ===================================PASSPORT
+app.use(passport.initialize());
+app.use(passport.session());
+// ===================================PASSPORT-LOCAL-MONGOOSE, PASSPORT-LOCAL
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 // ===================================EXPRESS SETUP
 app.listen(port, () => {
     console.log(`Lisining port ${port}`);
@@ -66,11 +80,22 @@ app.use((req, res, next)=>{
     res.locals.error = req.flash("error");
     next();
 })
+app.get("/demouser",async (req,res)=>{
+    let fakeUser = new User({
+        email : "kaushik1234@gmail.com",
+        username : "kaushik-roy"
+    });
+    let registeredUser = await User.register(fakeUser,"helloworld");
+    res.send(registeredUser);
+    req.flash("")
+});
 
 // =================================== Listing ===================================
-app.use("/listing",listing);
+app.use("/listing",listingRouter);
 // =================================== Review ===================================
-app.use("/listing/:id/reviews",reviews);
+app.use("/listing/:id/reviews",reviewsRouter);
+// =================================== User ===================================
+app.use("/",userRouter);
 
 
 // Error Handling
