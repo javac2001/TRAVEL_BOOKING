@@ -80,15 +80,6 @@ app.use((req, res, next)=>{
     res.locals.error = req.flash("error");
     next();
 })
-app.get("/demouser",async (req,res)=>{
-    let fakeUser = new User({
-        email : "kaushik1234@gmail.com",
-        username : "kaushik-roy"
-    });
-    let registeredUser = await User.register(fakeUser,"helloworld");
-    res.send(registeredUser);
-    req.flash("")
-});
 
 // =================================== Listing ===================================
 app.use("/listing",listingRouter);
