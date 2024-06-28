@@ -9,6 +9,10 @@ const ExpressError = require("../utils/ExpressError.js");
 const {dataSchema} = require("../schema.js");
 
 
+// login Middleware
+let {isValidate} = require("../middleware.js");
+
+
 // ===================================For Schema Validation
 let SchemaValidation = (req, res, next) =>{
     let {error} = dataSchema.validate(req.body);
@@ -21,7 +25,7 @@ let SchemaValidation = (req, res, next) =>{
 }
 
 // ===================================CREATE ROUTE
-router.get("/new", (req, res) => {
+router.get("/new", isValidate, (req, res) => {
     res.render("./listings/new.ejs");
 })
 router.post("/",SchemaValidation,WrapAsync( async (req, res, next) => {
@@ -53,6 +57,7 @@ router.get("/:id", WrapAsync(
 ));
 // ===================================EDIT ROUTE
 router.get("/:id/edit",
+    isValidate,
     WrapAsync(
     async (req, res) => {
         let { id } = req.params;
@@ -67,7 +72,9 @@ router.get("/:id/edit",
 
 
 // ===================================UPDATE ROUTE
-router.put("/:id", WrapAsync(
+router.put("/:id",
+    isValidate, 
+    WrapAsync(
     async (req, res) => {
         let { id } = req.params;
         if(!req.body.data){
@@ -85,7 +92,7 @@ router.put("/:id", WrapAsync(
     }
 ))
 // ===================================DELETE ROUTE
-router.delete("/:id", WrapAsync(
+router.delete("/:id",isValidate, WrapAsync(
     async (req, res) => {
         let { id } = req.params;
         await Listing.findByIdAndDelete(id)
