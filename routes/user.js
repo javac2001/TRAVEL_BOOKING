@@ -32,6 +32,21 @@ router.post('/login',
     function (req, res) {
         req.flash("success", "Welcome to wanderland")
         res.redirect('/listing');
-    });
+    }
+);
+
+// =================================== LOGIN ===================================
+router.get("/logout",(req,res,next)=>{
+    req.logout((err) => {
+        if(err) {
+            req.flash("error", "You are not able to logout");
+            return next()
+        }else{
+            req.flash("success", "logout");
+            res.redirect("/listing")
+        }
+    })
+})
+
 
 module.exports = router;
