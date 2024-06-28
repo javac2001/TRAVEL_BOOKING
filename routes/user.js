@@ -8,14 +8,19 @@ const passport = require('passport');
 router.get("/signup", (req, res) => {
     res.render("user/signup.ejs")
 })
-router.post("/signup", wrapAsync(async (req, res) => {
+router.post("/signup", wrapAsync(async (req, res, next) => {
     try {
         let { username, email, password } = req.body;
         let registerUser = await new User({ username, email });
         let newUser = await User.register(registerUser, password);
+        req.login(newUser, (err) => {
+            if (err) {
+                return next();
+            }
+            req.flash("success", "New user created");
+            res.redirect("/listing");
+        })
         console.log(newUser);
-        req.flash("success", "New user created");
-        res.redirect("/listing");
     } catch (e) {
         req.flash("error", e.message);
         res.redirect("/signup");
@@ -35,13 +40,13 @@ router.post('/login',
     }
 );
 
-// =================================== LOGIN ===================================
-router.get("/logout",(req,res,next)=>{
+// =================================== LOGOUT ===================================
+router.get("/logout", (req, res, next) => {
     req.logout((err) => {
-        if(err) {
+        if (err) {
             req.flash("error", "You are not able to logout");
             return next()
-        }else{
+        } else {
             req.flash("success", "logout");
             res.redirect("/listing")
         }
