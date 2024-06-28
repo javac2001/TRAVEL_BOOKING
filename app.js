@@ -74,10 +74,11 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
     res.send("THIS IS ROOT");
 });
-
+// ===================================LOCAL VARIABLE
 app.use((req, res, next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
+    res.locals.userInfo = req.user;
     next();
 })
 
