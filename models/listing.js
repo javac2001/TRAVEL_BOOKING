@@ -30,12 +30,16 @@ let listingSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Review"
         }
-    ]
+    ],
+    owners: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 })
 
-listingSchema.post("findOneAndDelete",async(data)=>{
-    if(data) {
-        await Review.deleteMany({_id : {$in : data.reviews}})
+listingSchema.post("findOneAndDelete", async (data) => {
+    if (data) {
+        await Review.deleteMany({ _id: { $in: data.reviews } })
     }
 });
 

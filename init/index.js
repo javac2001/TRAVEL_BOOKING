@@ -22,9 +22,16 @@ let initDB = async()=>{
         image : initData.data[i].image.url,
         price : initData.data[i].price,
         location : initData.data[i].location,
-        country : initData.data[i].country
+        country : initData.data[i].country,
+        owners : '668cd3ccc8870573f9f9af20'
       });
     }
+    // let insertData = arr.map((obj)=>(
+    //   {
+    //     ...obj,
+    //     owners : '668cd3ccc8870573f9f9af20'
+    //   }
+    // ))
     await Listing.insertMany(arr);
 }
 

@@ -7,8 +7,6 @@ const WrapAsync = require("../utils/wrapAsync.js")
 const ExpressError = require("../utils/ExpressError.js");
 // Joi
 const {dataSchema} = require("../schema.js");
-
-
 // login Middleware
 let {isValidate} = require("../middleware.js");
 
@@ -30,6 +28,7 @@ router.get("/new", isValidate, (req, res) => {
 })
 router.post("/",SchemaValidation,WrapAsync( async (req, res, next) => {
         let listingData =  new Listing(req.body.data);
+        listingData.owners = req.user._id;
         await listingData.save();
         req.flash("success", "New listing created");
         res.redirect("/listing");
@@ -46,13 +45,13 @@ router.get("/", WrapAsync(
 router.get("/:id", WrapAsync(
     async (req, res) => {
         let { id } = req.params;
-        let listingData = await Listing.findById(id).populate("reviews");
+        let listingData = await Listing.findById(id).populate("reviews").populate("owners");
         if(!listingData){
             req.flash("error","Listing you request for dose not exist");
             res.redirect("/listing")
         }
         console.log(listingData);
-        res.render("./listings/show.ejs", { listingData });
+        res.render("./listings/show.ejs", { listingData});
     }
 ));
 // ===================================EDIT ROUTE

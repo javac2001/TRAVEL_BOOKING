@@ -9,6 +9,12 @@
                 <img src="<%= listingData.image %>" class="card-img-top show-image">
                 <div class="card-body">
                     <p class="card-text">
+                        Owned by <i>
+                            <%= listingData.owners.username %>
+                        </i>
+                    </p>
+
+                    <p class="card-text">
                         <b>Description:</b>
                         <%= listingData.description %>
                     </p>
@@ -25,14 +31,16 @@
                         <%= listingData.country %>
                     </p>
                 </div>
-                <div class="btns">
-                    <form action="/listing/<%= listingData._id %>/edit" method="get">
-                        <button class="btn btn-dark add-btn">EDIT</button>
-                    </form>
-                    <form action="/listing/<%= listingData._id %>?_method=DELETE" method="post">
-                        <button class="btn btn-dark">DELETE</button>
-                    </form>
-                </div>
+                <% if (userInfo._id.equals(listingData.owners._id)) { %>
+                    <div class="btns">
+                        <form action="/listing/<%= listingData._id %>/edit" method="get">
+                            <button class="btn btn-dark add-btn">EDIT</button>
+                        </form>
+                        <form action="/listing/<%= listingData._id %>?_method=DELETE" method="post">
+                            <button class="btn btn-dark">DELETE</button>
+                        </form>
+                    </div>
+                <% } %>
                 <br>
                 <hr>
                 <br>
@@ -60,18 +68,21 @@
                         <div class="card col-md-5 ms-2 mb-3">
                             <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
-                                <p class="card-text"><%= review.comment %></p>
+                                <p class="card-text">
+                                    <%= review.comment %>
+                                </p>
                                 <p class="card-text">
                                     <% for(let i=0; i<review.rating; i++){ %>
                                         <i class="fa-solid fa-star"></i>
-                                    <% } %> 
+                                        <% } %>
                                 </p>
                             </div>
-                            <form action="/listing/<%= listingData._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                            <form action="/listing/<%= listingData._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                method="post">
                                 <button type="submit" class="btn btn-dark mt-2 mb-2">REMOVE</button>
                             </form>
                         </div>
-                    <% } %>
+                        <% } %>
                 </div>
             </div>
         </div>
