@@ -23,15 +23,9 @@ let initDB = async()=>{
         price : initData.data[i].price,
         location : initData.data[i].location,
         country : initData.data[i].country,
-        owners : '668cd3ccc8870573f9f9af20'
+        owners : '669e173655001a9a78509968'
       });
     }
-    // let insertData = arr.map((obj)=>(
-    //   {
-    //     ...obj,
-    //     owners : '668cd3ccc8870573f9f9af20'
-    //   }
-    // ))
     await Listing.insertMany(arr);
 }
 

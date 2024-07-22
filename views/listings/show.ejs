@@ -31,7 +31,7 @@
                         <%= listingData.country %>
                     </p>
                 </div>
-                <% if (userInfo._id.equals(listingData.owners._id)) { %>
+                <% if (userInfo && userInfo._id.equals(listingData.owners._id)) { %>
                     <div class="btns">
                         <form action="/listing/<%= listingData._id %>/edit" method="get">
                             <button class="btn btn-dark add-btn">EDIT</button>
