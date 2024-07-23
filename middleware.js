@@ -1,7 +1,7 @@
 module.exports.isValidate = (req, res, next) =>{
     if(! req.isAuthenticated()){
         req.session.redirectUrl = req.originalUrl;
-        req.flash("error","You must be login to create")
+        req.flash("error","You must be login")
         return res.redirect("/login");
     }
     next();

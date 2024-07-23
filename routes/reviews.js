@@ -22,7 +22,10 @@ let ReviewSchemaValidation = (req, res, next) =>{
 
 // =================================== POST ROUTE
 
-router.post("/",ReviewSchemaValidation, WrapAsync(async(req, res) =>{
+router.post("/",
+    isValidate,
+    ReviewSchemaValidation, 
+    WrapAsync(async(req, res) =>{
     let {id} = req.params;
     let listing = await Listing.findById(id);
     let review = req.body.review;

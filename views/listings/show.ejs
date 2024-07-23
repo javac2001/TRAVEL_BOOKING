@@ -40,7 +40,7 @@
                             <button class="btn btn-dark">DELETE</button>
                         </form>
                     </div>
-                <% } %>
+                
                 <br>
                 <hr>
                 <br>
@@ -60,6 +60,7 @@
                         <button type="submit" class="btn btn-dark add-btn">SUBMIT</button>
                     </form>
                 </div>
+                <% } %>
                 <hr>
                 <h4>All Reviews</h4>
 
@@ -77,10 +78,12 @@
                                         <% } %>
                                 </p>
                             </div>
+                            
                             <form action="/listing/<%= listingData._id %>/reviews/<%= review._id %>?_method=DELETE"
                                 method="post">
                                 <button type="submit" class="btn btn-dark mt-2 mb-2">REMOVE</button>
                             </form>
+
                         </div>
                         <% } %>
                 </div>
