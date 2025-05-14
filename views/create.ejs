@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayFinder</title>
+</head>
+<body>
+    <form action="/stayfinder" method="post">
+        <label for="title">Title</label>
+        <input type="text" name="listing[title]" id="title">
+        <br><br>
+        <label for="description">Description</label>
+        <br>
+        <textarea name="listing[description]" id="description" cols="30" rows="10"></textarea>
+        <br><br>
+        <label for="price">Price</label>
+        <input type="number" name="listing[price]" id="price">
+        <br><br>
+        <label for="location">Location</label>
+        <input type="text" name="listing[location]" id="location">
+        <br><br>
+        <label for="country">Country</label>
+        <input type="text" name="listing[country]" id="country">
+        <br><br>
+        <button type="submit">CREATE</button>
+    </form>
+</body>
+</html>
