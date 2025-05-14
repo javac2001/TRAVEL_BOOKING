@@ -1,25 +1,26 @@
 {
-  "name": "travel_prog",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3"
+  },
+  "name": "travel_booking",
   "version": "1.0.0",
-  "description": "This is a travel booking site",
-  "main": "app.js",
+  "main": "index.js",
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javac2001/TRAVEL_BOOKING.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "connect-flash": "^0.1.1",
-    "ejs": "^3.1.9",
-    "ejs-mate": "^4.0.0",
-    "express": "^4.18.2",
-    "express-session": "^1.18.0",
-    "joi": "^17.13.0",
-    "method-override": "^3.0.0",
-    "mongoose": "^8.1.1",
-    "passport": "^0.7.0",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0"
-  }
+  "bugs": {
+    "url": "https://github.com/javac2001/TRAVEL_BOOKING/issues"
+  },
+  "homepage": "https://github.com/javac2001/TRAVEL_BOOKING#readme",
+  "description": ""
 }
