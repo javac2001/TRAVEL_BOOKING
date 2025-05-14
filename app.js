@@ -3,6 +3,7 @@ const app = express();
 const port = 8080;
 const path = require('path');
 const mongoose = require('mongoose');
+const dataListingModules = require("./models/dataListingModules.js")
 
 // EJS
 app.set("view engine", "ejs");
@@ -23,11 +24,18 @@ main().then(()=> {console.log("Connection Established by MONGOOSE")}).catch((err
 
 // =====================================================
 
-
+// Root path
 app.get("/",(req, res)=>{
-    res.send("This is root")
+    res.redirect("/stayfinder")
 })
+// =====================================================
 
+// Index Path
+app.get("/stayfinder", async (req, res)=>{
+
+    res.send("This is INDEX path");
+})
+// =====================================================
 
 app.listen(port,()=>{
     console.log(`Connected to ${port}`);
