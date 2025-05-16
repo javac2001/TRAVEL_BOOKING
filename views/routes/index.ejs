@@ -1,0 +1,12 @@
+<% layout('layouts/boilerplate') -%>
+
+<% for (const element of data) { %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><%= element.title %></h5>
+      <form action="/stayfinder/<%= element._id %>/show" method="get">
+        <button type="submit" class="btn btn-primary">Show</button>
+      </form>
+    </div>
+  </div>
+<% } %>

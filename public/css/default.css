@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+:root{
+    --body-background-color : #F8FAFC;
+    --nav-background-color : #A1E3F9;
+    --footer-background-color : #A1E3F9;
+    --body-card-color : #3A59D1;
+    --button-color : #3D90D7;
+}
+body{
+    background-color:  var(--body-background-color) ;
+    font-family: "Open Sans", sans-serif ;
+    position: relative ;
+}
+button{
+    background-color: var(--button-color) ;
+    outline: none ;
+    border: none ;
+    padding: 5px 10px ;
+    border-radius: 20px;
+}

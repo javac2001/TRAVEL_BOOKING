@@ -5,11 +5,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dataListingModules = require("./models/dataListingModules.js")
 const methodOverride = require('method-override');
+const engine = require('ejs-mate');
 
 // EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// Add CSS or JS
+// EJS-Mate
+app.engine('ejs', engine);
+// Add CSS and JS
 app.use(express.static(path.join(__dirname, "public")));
 // Handling POST request
 app.use(express.urlencoded({ extended: true }));
@@ -37,7 +40,7 @@ app.get("/", (req, res) => {
 app.get("/stayfinder", async (req, res) => {
     try {
         let data = await dataListingModules.find();
-        res.render("index.ejs", { data });
+        res.render("routes/index.ejs", { data });
     } catch (error) {
         console.log(error);
     }
@@ -49,7 +52,7 @@ app.get("/stayfinder/:id/show", async (req, res) => {
     try {
         let { id } = req.params;
         let data = await dataListingModules.findById(id);
-        res.render("show.ejs", { data });
+        res.render("routes/show.ejs", { data });
     } catch (error) {
         console.log(error);
     }
@@ -58,7 +61,7 @@ app.get("/stayfinder/:id/show", async (req, res) => {
 
 // Create Route
 app.get("/stayfinder/create", (req, res) => {
-    res.render("create.ejs")
+    res.render("routes/create.ejs")
 })
 
 app.post("/stayfinder", async (req, res) => {
@@ -85,7 +88,7 @@ app.get("/stayfinder/:id/edit", async (req, res) => {
         let { id } = req.params;
         let data = await dataListingModules.findById(id);
         console.log(data);
-        res.render("edit.ejs", { data })
+        res.render("routes/edit.ejs", { data })
     } catch (error) {
         console.log(error);
     }
