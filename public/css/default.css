@@ -1,26 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
-:root{
-    --body-background-color : #F8FAFC;
-    --nav-background-color : #A1E3F9;
-    --footer-background-color : #A1E3F9;
-    --body-card-color : #3A59D1;
-    --button-color : #3D90D7;
+
+:root {
+    --body-background-color: #F8FAFC;
+    --nav-background-color: #72ceec;
+    --footer-background-color: #A1E3F9;
+    --body-card-color: #3A59D1;
+    --button-color: #3D90D7;
 }
-body{
-    background-color:  var(--body-background-color) ;
-    font-family: "Open Sans", sans-serif ;
-    position: relative ;
+
+/* For a specific element, like body or a div */
+body::-webkit-scrollbar {
+    display: none;
 }
-button{
-    background-color: var(--button-color) ;
-    outline: none ;
-    border: none ;
-    padding: 5px 10px ;
+
+body {
+    background-color: var(--body-background-color);
+    font-family: "Open Sans", sans-serif;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: 0px;
+}
+
+.container {
+    padding: 5px 10%;
+    height: 100%;
+}
+
+button {
+    background-color: var(--button-color);
+    outline: none;
+    border: none;
+    width: 90px;
+    height: 40px;
+    font-size: 1em;
     border-radius: 20px;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+button:hover {
+    width: 100px;
 }
