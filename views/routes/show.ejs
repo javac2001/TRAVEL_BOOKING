@@ -1,20 +1,36 @@
 <% layout('layouts/boilerplate') -%>
-<body>
-    <h1>SHOW</h1>
-    <div class="container">
-        <div><strong>Title:</strong><%= data.title %></div>
-        <div><strong>Description:</strong><%= data.description %></div>
-        <div><strong>Price:</strong>&#x20B9;<%= data.price.toLocaleString("en-IN") %></div>
-        <div><strong>Location:</strong><%= data.location %></div>
-        <div><strong>Country:</strong><%= data.country %></div>
-    </div>
-    <form action="/stayfinder/<%= data._id %>/edit" method="get">
-        <button type="submit">EDIT</button>
-    </form>
-    <form action="/stayfinder/<%= data._id %>?_method=DELETE" method="post">
-        <button type="submit">DELETE</button>
-    </form>
-    <form action="/stayfinder" method="get">
-        <button type="HOME">HOME</button>
-    </form>
-</body>
+
+    <body>
+        <div class="travel-card">
+            <img src="<%= data.image %>" alt="Travel Destination" class="travel-image">
+
+            <div class="travel-content">
+                <h1 class="travel-title">
+                    <%= data.title %>
+                </h1>
+                <p class="travel-location">
+                    <%= data.location %>
+                </p>
+                <p class="travel-country">
+                    <%= data.country %>
+                </p>
+                <p class="travel-description">
+                    <%= data.description %>
+                </p>
+                <p class="travel-price">&#x20B9;<%= data.price.toLocaleString("en-IN")%> /Night
+                </p>
+
+                <form action="/stayfinder/<%= data._id %>/edit" method="get">
+                    <button type="submit">EDIT</button>
+                </form>
+                <form action="/stayfinder/<%= data._id %>?_method=DELETE" method="post">
+                    <button type="submit">DELETE</button>
+                </form>
+                <form action="/stayfinder" method="get">
+                    <button type="HOME">HOME</button>
+                </form>
+            </div>
+
+        </div>
+
+    </body>

@@ -1,25 +1,45 @@
 <% layout('layouts/boilerplate') -%>
+
 <body>
-    <form action="/stayfinder" method="post">
-        <label for="title">Title</label>
-        <input type="text" name="listing[title]" id="title">
-        <br><br>
-        <label for="description">Description</label>
-        <br>
-        <textarea name="listing[description]" id="description" cols="30" rows="10"></textarea>
-        <br><br>
-        <label for="price">Price</label>
-        <input type="number" name="listing[price]" id="price">
-        <br><br>
-        <label for="location">Location</label>
-        <input type="text" name="listing[location]" id="location">
-        <br><br>
-        <label for="country">Country</label>
-        <input type="text" name="listing[country]" id="country">
-        <br><br>
-        <button type="submit">CREATE</button>
-    </form>
-    <form action="/stayfinder" method="get">
+    <section class="form-section">
+    <div class="form-container">
+      <h2>Post a Travel Place</h2>
+      <form action="/stayfinder" method="post">
+        <div class="form-group">
+          <label for="title">Place Title</label>
+          <input type="text" id="title" name="listing[title]" placeholder="e.g. Eiffel Tower" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="listing[description]" rows="4" placeholder="Describe the place..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image URL</label>
+            <input type="url" id="image" name="listing[image]" placeholder="https://example.com/image.jpg">
+        </div>
+        
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="listing[price]" placeholder="e.g. 199" required>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="listing[location]" placeholder="e.g. Paris" required>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" id="country" name="listing[country]" placeholder="e.g. France" required>
+        </div>
+        <button type="submit">SUBMIT</button>
+      </form>
+      <form action="/stayfinder" method="get">
         <button type="HOME">HOME</button>
     </form>
+    </div>
+  </section>
+
 </body>

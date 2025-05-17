@@ -1,25 +1,42 @@
 <% layout('layouts/boilerplate') -%>
 <body>
-    <form action="/stayfinder/<%= data._id %>?_method=PUT" method="post">
-        <label for="title">Title</label>
-        <input type="text" name="listing[title]" id="title" value="<%= data.title %>">
-        <br><br>
-        <label for="description">Description</label>
-        <br>
-        <textarea name="listing[description]" id="description" cols="40" rows="6"><%= data.description %></textarea>
-        <br><br>
-        <label for="price">Price</label>
-        <input type="number" name="listing[price]" id="price" value="<%= data.price %>">
-        <br><br>
-        <label for="location">Location</label>
-        <input type="text" name="listing[location]" id="location" value="<%= data.location %>">
-        <br><br>
-        <label for="country">Country</label>
-        <input type="text" name="listing[country]" id="country" value="<%= data.country %>">
-        <br><br>
-        <button type="submit">DONE</button>
-    </form>
-    <form action="/stayfinder" method="get">
+    <section class="form-section">
+    <div class="form-container">
+      <form action="/stayfinder/<%= data._id %>?_method=PUT" method="post">
+        <div class="form-group">
+          <label for="title">Place Title</label>
+          <input type="text" id="title" name="listing[title]" value="<%= data.title %>">
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="listing[description]" rows="4"><%= data.description %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image URL</label>
+            <input type="url" id="image" name="listing[image]" value="<%= data.image %>">
+        </div>
+        
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="listing[price]" value="<%= data.price %>">
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="listing[location]" value="<%= data.location %>">
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" id="country" name="listing[country]" value="<%= data.country %>">
+        </div>
+        <button type="submit">SUBMIT</button>
+      </form>
+      <form action="/stayfinder" method="get">
         <button type="HOME">HOME</button>
     </form>
+    </div>
+  </section>
 </body>

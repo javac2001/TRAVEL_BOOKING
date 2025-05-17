@@ -1,12 +1,20 @@
 <% layout('layouts/boilerplate') -%>
-
-<% for (const element of data) { %>
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title"><%= element.title %></h5>
-      <form action="/stayfinder/<%= element._id %>/show" method="get">
-        <button type="submit" class="btn btn-primary">Show</button>
-      </form>
+<body>
+  <section class="card-section">
+    <h2>Popular Destinations</h2>
+    <div class="card-container">
+      <% for (const element of data) { %>
+      <div class="card">
+        <img src=<%= element.image %> alt="Paris">
+        <div class="card-content">
+          <h3><%= element.title %></h3>
+          <p>&#x20B9;<%= element.price.toLocaleString("en-IN") %> /NIGHT</p>
+          <form action="/stayfinder/<%= element._id %>/show" method="get">
+            <button type="submit">SHOW</button>
+          </form>
+        </div>
+      </div>
+      <% } %>
     </div>
-  </div>
-<% } %>
+  </section>
+</body>
