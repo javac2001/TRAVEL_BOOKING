@@ -1,0 +1,54 @@
+.travel-card {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.travel-image {
+  width: 100%;
+  object-fit: contain;
+  height: 50vh;
+  display: block;
+}
+
+.travel-content {
+  padding: 20px;
+}
+
+.travel-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.travel-location,
+.travel-country,
+.travel-price {
+  font-weight: bold;
+  margin: 10px 0;
+  color: #34495e;
+}
+
+.travel-description {
+  margin: 15px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+  .travel-title {
+    font-size: 1.5rem;
+  }
+
+  .travel-content {
+    padding: 15px;
+  }
+
+  .travel-description {
+    font-size: 0.95rem;
+  }
+}
