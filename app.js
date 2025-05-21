@@ -37,24 +37,24 @@ app.get("/", (req, res) => {
 // =====================================================
 
 // Index Route
-app.get("/stayfinder", async (req, res) => {
+app.get("/stayfinder", async (req, res, next) => {
     try {
         let data = await dataListingModules.find();
         res.render("routes/index.ejs", { data });
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
 // =====================================================
 
 // Show Route
-app.get("/stayfinder/:id/show", async (req, res) => {
+app.get("/stayfinder/:id/show", async (req, res, next) => {
     try {
         let { id } = req.params;
         let data = await dataListingModules.findById(id);
         res.render("routes/show.ejs", { data });
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
 // =====================================================
@@ -64,7 +64,7 @@ app.get("/stayfinder/create", (req, res) => {
     res.render("routes/create.ejs")
 })
 
-app.post("/stayfinder", async (req, res) => {
+app.post("/stayfinder", async (req, res, next) => {
     try {
         let data = req.body.listing;
         await dataListingModules.insertOne(data)
@@ -72,28 +72,28 @@ app.post("/stayfinder", async (req, res) => {
                 console.log(res);
             })
             .catch((err) => {
-                console.log(err);
+                next(err);
             })
         console.log(data);
         res.redirect("/stayfinder");
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
 // =====================================================
 
 // Update Route
-app.get("/stayfinder/:id/edit", async (req, res) => {
+app.get("/stayfinder/:id/edit", async (req, res, next) => {
     try {
         let { id } = req.params;
         let data = await dataListingModules.findById(id);
         console.log(data);
         res.render("routes/edit.ejs", { data })
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
-app.put("/stayfinder/:id", async (req, res) => {
+app.put("/stayfinder/:id", async (req, res, next) => {
     try {
         let { id } = req.params;
         let data = req.body.listing;
@@ -102,17 +102,17 @@ app.put("/stayfinder/:id", async (req, res) => {
                 console.log(res);
             })
             .catch((err) => {
-                console.log(err);
+                next(err);
             })
         res.redirect("/stayfinder");
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
 // =====================================================
 
 // Delete Route
-app.delete("/stayfinder/:id", async (req, res) => {
+app.delete("/stayfinder/:id", async (req, res, next) => {
     try {
         let { id } = req.params;
         await dataListingModules.findByIdAndDelete(id)
@@ -120,14 +120,20 @@ app.delete("/stayfinder/:id", async (req, res) => {
                 console.log(res);
             })
             .catch((err) => {
-                console.log(err);
+                next(err);
             })
         res.redirect("/stayfinder");
     } catch (error) {
-        console.log(error);
+        next(err);
     }
 })
 // =====================================================
+
+// Error Handling Middleware
+
+app.use((err, req, res, next) => {
+    res.send("Sorry for the error");
+})
 
 
 app.listen(port, () => {
