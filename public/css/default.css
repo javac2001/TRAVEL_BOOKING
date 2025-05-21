@@ -24,8 +24,10 @@ body {
     background-color: var(--body-background-color) !important;
     font-family: "Open Sans", sans-serif !important;
     position: relative !important ;
+    top: 10vh;
     -ms-overflow-style: none !important;
     scrollbar-width: 0px !important;
+    
 }
 form{
     display: inline !important;

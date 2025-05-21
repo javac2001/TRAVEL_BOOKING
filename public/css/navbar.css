@@ -17,7 +17,6 @@
   border-radius: 40px;
 }
 
-/* For dark mode or custom color theme */
 .navbar {
   background-color: var(--nav-background-color) !important;
   box-shadow: 0px 5px 11px 0px var(--body-background-color) !important;

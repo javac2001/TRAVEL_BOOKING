@@ -7,41 +7,53 @@
           <h2 class="text-center mb-4">Post a Travel Place</h2>
 
           <!-- POST FORM -->
-          <form action="/stayfinder" method="POST">
+          <form action="/stayfinder" method="POST" novalidate class="needs-validation">
             <div class="mb-3">
               <label for="title" class="form-label">Place Title</label>
               <input type="text" class="form-control" id="title" name="listing[title]" placeholder="e.g. Eiffel Tower"
                 required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter a place title.</div>
             </div>
 
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
               <textarea class="form-control" id="description" name="listing[description]" rows="4"
                 placeholder="Describe the place..." required></textarea>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please provide a description of the place.</div>
             </div>
 
             <div class="mb-3">
               <label for="image" class="form-label">Image URL</label>
               <input type="url" class="form-control" id="image" name="listing[image]"
                 placeholder="https://example.com/image.jpg">
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter a valid image URL.</div>
             </div>
 
             <div class="mb-3">
               <label for="price" class="form-label">Price</label>
               <input type="number" class="form-control" id="price" name="listing[price]" placeholder="e.g. 199"
                 required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter a price.</div>
             </div>
 
             <div class="mb-3">
               <label for="location" class="form-label">Location</label>
               <input type="text" class="form-control" id="location" name="listing[location]" placeholder="e.g. Paris"
                 required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter a location.</div>
             </div>
 
             <div class="mb-3">
               <label for="country" class="form-label">Country</label>
               <input type="text" class="form-control" id="country" name="listing[country]" placeholder="e.g. France"
                 required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter the country name.</div>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
