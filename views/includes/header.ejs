@@ -1,4 +1,4 @@
-<header class="navbar">
+<!-- <header class="navbar">
   <div class="brand">
     <a href="/stayfinder">
       <img src="/img/logo.png" alt="stayfinder">
@@ -9,5 +9,31 @@
   </div>
   <nav id="navLinks">
     <a href="/stayfinder/create">CREATE</a>
+  </nav>
+</header> -->
+
+
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top shadow">
+    <div class="container-fluid">
+      <!-- Brand / Logo -->
+      <a class="navbar-brand" href="/stayfinder">
+        <img src="/img/logo.png" alt="stayfinder" class="logo-img">
+      </a>
+
+      <!-- Toggle Button for Mobile -->
+      <button class="navbar-toggler nav-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <i class="fa-solid fa-bars" id="rotateBar"></i>
+      </button>
+
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/stayfinder/create">CREATE</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </nav>
 </header>

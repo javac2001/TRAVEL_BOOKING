@@ -1,7 +1,7 @@
 .card-section {
   padding: 40px 20px;
   text-align: center;
-  background: #f7f7f7;
+  background: var(--body-background-color) !important;
 }
 
 .card-section h2 {
@@ -20,11 +20,13 @@
 
 .card {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 20px !important;
   overflow: hidden;
   height: 100%;
   box-shadow: 0 5px 20px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
+  outline: none !important; 
+  border: none !important; 
 }
 
 .card:hover {
