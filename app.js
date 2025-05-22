@@ -3,139 +3,107 @@ const app = express();
 const port = 8080;
 const path = require('path');
 const mongoose = require('mongoose');
-const dataListingModules = require("./models/dataListingModules.js")
+const dataListingModules = require("./models/dataListingModules.js");
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
+const wrapAsync = require("./utils/wrapAsync.js");
+const ExpressError = require("./utils/expressError.js");
 
-// EJS
+// View Engine Setup
+app.engine('ejs', engine);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// EJS-Mate
-app.engine('ejs', engine);
-// Add CSS and JS
+
+// Middleware Setup
 app.use(express.static(path.join(__dirname, "public")));
-// Handling POST request
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Method Override
 app.use(methodOverride('_method'));
 
+// Add logger here
+app.use((req, res, next) => {
+    console.log("Incoming request path:", req.path);
+    next();
+});
 
-// Mongoose DataBase Connection
-
+// MongoDB Connection
 async function main() {
-    mongoose.connect('mongodb://127.0.0.1:27017/StayFinder');
+    await mongoose.connect('mongodb://127.0.0.1:27017/StayFinder');
 }
-main().then(() => { console.log("Connection Established by MONGOOSE") }).catch((err) => { console.log(err); })
+main()
+    .then(() => console.log("Connection Established by MONGOOSE"))
+    .catch(err => console.log("MongoDB Error:", err));
 
-// =====================================================
-
-// Root Route
+// Routes
 app.get("/", (req, res) => {
-    res.redirect("/stayfinder")
-})
-// =====================================================
+    res.redirect("/stayfinder");
+});
 
-// Index Route
-app.get("/stayfinder", async (req, res, next) => {
-    try {
-        let data = await dataListingModules.find();
-        res.render("routes/index.ejs", { data });
-    } catch (error) {
-        next(err);
-    }
-})
-// =====================================================
+// INDEX
+app.get("/stayfinder", wrapAsync(async (req, res) => {
+    const data = await dataListingModules.find();
+    res.render("routes/index.ejs", { data });
+}));
 
-// Show Route
-app.get("/stayfinder/:id/show", async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        let data = await dataListingModules.findById(id);
-        res.render("routes/show.ejs", { data });
-    } catch (error) {
-        next(err);
-    }
-})
-// =====================================================
+// SHOW
+app.get("/stayfinder/:id/show", wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const data = await dataListingModules.findById(id);
+    if (!data) throw new ExpressError(404, "Listing not found");
+    res.render("routes/show.ejs", { data });
+}));
 
-// Create Route
+// CREATE FORM
 app.get("/stayfinder/create", (req, res) => {
-    res.render("routes/create.ejs")
-})
+    res.render("routes/create.ejs");
+});
 
-app.post("/stayfinder", async (req, res, next) => {
-    try {
-        let data = req.body.listing;
-        await dataListingModules.insertOne(data)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                next(err);
-            })
-        console.log(data);
-        res.redirect("/stayfinder");
-    } catch (error) {
-        next(err);
-    }
-})
-// =====================================================
+// CREATE POST
+app.post("/stayfinder", wrapAsync(async (req, res) => {
+    const listingData = req.body.listing;
+    const listing = new dataListingModules(listingData);
+    await listing.save();
+    res.redirect("/stayfinder");
+}));
 
-// Update Route
-app.get("/stayfinder/:id/edit", async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        let data = await dataListingModules.findById(id);
-        console.log(data);
-        res.render("routes/edit.ejs", { data })
-    } catch (error) {
-        next(err);
-    }
-})
-app.put("/stayfinder/:id", async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        let data = req.body.listing;
-        await dataListingModules.findByIdAndUpdate(id, data, { runValidator: true }, { new: true })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                next(err);
-            })
-        res.redirect("/stayfinder");
-    } catch (error) {
-        next(err);
-    }
-})
-// =====================================================
+// EDIT FORM
+app.get("/stayfinder/:id/edit", wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const data = await dataListingModules.findById(id);
+    if (!data) throw new ExpressError(404, "Listing not found for editing");
+    res.render("routes/edit.ejs", { data });
+}));
 
-// Delete Route
-app.delete("/stayfinder/:id", async (req, res, next) => {
-    try {
-        let { id } = req.params;
-        await dataListingModules.findByIdAndDelete(id)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                next(err);
-            })
-        res.redirect("/stayfinder");
-    } catch (error) {
-        next(err);
-    }
-})
-// =====================================================
+// UPDATE
+app.put("/stayfinder/:id", wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const updatedData = req.body.listing;
+    await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
+    res.redirect("/stayfinder");
+}));
 
-// Error Handling Middleware
+// DELETE
+app.delete("/stayfinder/:id", wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    await dataListingModules.findByIdAndDelete(id);
+    res.redirect("/stayfinder");
+}));
 
+// 404 Route - catch all
+app.all("/:path*", (req, res, next) => {
+    next(new ExpressError(404, "Page not found"));
+});
+
+// Error Handler
 app.use((err, req, res, next) => {
-    res.send("Sorry for the error");
-})
+    const { status = 500, message = "Something went wrong" } = err;
+    res.status(status).send(message);
+    // res.status(status).render("error.ejs", { status, message });
+});
 
 
+
+// Start Server
 app.listen(port, () => {
-    console.log(`Connected to ${port}`);
-})
+    console.log(`Connected to port ${port}`);
+});
