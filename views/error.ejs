@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') -%>
+    <body class="bg-dark">
+        <div class="container text-center mt-5">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h1 class="display-4 text-danger">Oops!</h1>
+                    <p class="lead">Something went wrong.</p>
+
+                    <% if (error && error.status) { %>
+                        <h3 class="text-warning">Error <%= error.status %>
+                        </h3>
+                        <% } %>
+
+                            <% if (error && error.message) { %>
+                                <p>
+                                    <%= error.message %>
+                                </p>
+                                <% } else { %>
+                                    <p>An unexpected error has occurred. Please try again later.</p>
+                                    <% } %>
+                </div>
+            </div>
+            <form action="/stayfinder" method="get">
+                <button type="submit">HOME</button>
+            </form>
+        </div>
+    </body>
