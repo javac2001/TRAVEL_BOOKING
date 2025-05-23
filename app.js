@@ -8,6 +8,7 @@ const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/expressError.js");
+const getErrorFromSchema = require("./schema.js");
 
 // View Engine Setup
 app.engine('ejs', engine);
@@ -22,9 +23,20 @@ app.use(methodOverride('_method'));
 
 // Add logger here
 app.use((req, res, next) => {
-    console.log("Incoming request path:", req.path);
+    console.log("Incoming request path:", req.path, req.method);
     next();
 });
+
+// Joi Middleware function
+const getError = (req, res, next) => {
+    let {error} = getErrorFromSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el)=> el.message).join(",");
+        throw new ExpressError(404, errMsg);
+    }else{
+        next();
+    }
+}
 
 // MongoDB Connection
 async function main() {
@@ -59,10 +71,11 @@ app.get("/stayfinder/create", (req, res) => {
 });
 
 // CREATE POST
-app.post("/stayfinder", wrapAsync(async (req, res) => {
+app.post("/stayfinder", getError,wrapAsync(async (req, res) => {
     const listingData = req.body.listing;
-    const listing = new dataListingModules(listingData);
-    await listing.save();
+    await dataListingModules.insertOne(listingData).then(() => {
+        console.log("Data inserted in DB");
+    })
     res.redirect("/stayfinder");
 }));
 
@@ -75,7 +88,7 @@ app.get("/stayfinder/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 // UPDATE
-app.put("/stayfinder/:id", wrapAsync(async (req, res) => {
+app.put("/stayfinder/:id",getError, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body.listing;
     await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
@@ -99,11 +112,9 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
         error: err,
-        lang: req.query.lang || 'en' // you could get this from user session or Accept-Language
+        lang: req.query.lang || 'en'
     });
 });
-
-
 
 // Start Server
 app.listen(port, () => {
