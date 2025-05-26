@@ -9,7 +9,7 @@ const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/expressError.js");
-const {listingSchema, reviewSchema} = require("./schema.js");
+const { schema, reviewSchema } = require("./schema.js");
 
 // View Engine Setup
 app.engine('ejs', engine);
@@ -30,20 +30,20 @@ app.use((req, res, next) => {
 
 // Joi Middleware function
 const getError = (req, res, next) => {
-    let {error} = listingSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
+    let { error } = schema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
         throw new ExpressError(404, errMsg);
-    }else{
+    } else {
         next();
     }
 }
 const getReviewError = (req, res, next) => {
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
+    let { error } = reviewSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
         throw new ExpressError(404, errMsg);
-    }else{
+    } else {
         next();
     }
 }
@@ -72,7 +72,7 @@ app.get("/stayfinder", wrapAsync(async (req, res) => {
 // SHOW
 app.get("/stayfinder/:id/show", wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const data = await dataListingModules.findById(id);
+    const data = await dataListingModules.findById(id).populate('review');
     if (!data) throw new ExpressError(404, "Listing not found");
     res.render("routes/show.ejs", { data });
 }));
@@ -83,7 +83,7 @@ app.get("/stayfinder/create", (req, res) => {
 });
 
 // CREATE POST
-app.post("/stayfinder", getError,wrapAsync(async (req, res) => {
+app.post("/stayfinder", getError, wrapAsync(async (req, res) => {
     const listingData = req.body.listing;
     let newListing = new dataListingModules(listingData);
     await newListing.save();
@@ -99,7 +99,7 @@ app.get("/stayfinder/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 // UPDATE
-app.put("/stayfinder/:id",getError, wrapAsync(async (req, res) => {
+app.put("/stayfinder/:id",  getError,wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body.listing;
     await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
@@ -116,20 +116,19 @@ app.delete("/stayfinder/:id", wrapAsync(async (req, res) => {
 
 // ================================================================= Reviews
 
-app.get('/stayfinder/:id/review',wrapAsync(async(req, res)=>{
-    let {id} = req.params;
-    const data = await dataListingModules.findById(id).populate('review'); 
+app.get('/stayfinder/:id/review', wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    const data = await dataListingModules.findById(id).populate('review');
     if (!data) throw new ExpressError(404, 'Listing not found');
 
-    res.render('routes/review.ejs',{data});
+    res.render('routes/review.ejs', { data });
 }))
 
 app.post('/stayfinder/:id/review', getReviewError, wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const data = await dataListingModules.findById(id);
-    const { rating, comments } = req.body.review;
+    const { username, rating, comments } = req.body.review;
 
-    const reviewData = new reviewModel({ rating, comments });
+    const reviewData = new reviewModel({ username, rating, comments });
     await reviewData.save();
 
     const listing = await dataListingModules.findById(id);
@@ -140,6 +139,20 @@ app.post('/stayfinder/:id/review', getReviewError, wrapAsync(async (req, res) =>
 
     res.redirect(`/stayfinder/${id}/show`)
 }));
+
+app.delete("/stayfinder/:id/review/:reviewId", getReviewError, wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+
+    await dataListingModules.findByIdAndUpdate(id, { $pull: {review : reviewId} })
+    await reviewModel.findByIdAndDelete(reviewId)
+
+    res.redirect(`/stayfinder/${id}/show`)
+}))
+
+
+
+
+
 
 
 

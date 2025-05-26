@@ -8,15 +8,15 @@ const schema = Joi.object({
         price: Joi.number().min(0).required(),
         location: Joi.string().required(),
         country: Joi.string().required()
-
     }).required()
 });
 
 const reviewSchema = Joi.object({
     review : Joi.object({
-        rating : Joi.number().min(3).max(30).required(),
+        username : Joi.string().required(),
+        rating : Joi.number().min(1).max(5).required(),
         comments : Joi.string().required()
-    }).required()
+    })
 })
 
 

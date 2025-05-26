@@ -36,4 +36,35 @@
 
         </div>
 
+        <hr>
+
+        <div class="container mt-5 review-section">
+    <h2 class="mb-4">Reviews</h2>
+
+    <% if (data.review && data.review.length > 0) { %>
+        <div class="row row-cols-1 g-4">
+            <% data.review.forEach(function(review) { %>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= review.username %></h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review.rating %>/5</h6>
+                            <p class="card-text"><%= review.comments %></p>
+                            
+                            <form action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info" role="alert">
+            No reviews yet. Be the first to review!
+        </div>
+    <% } %>
+</div>
+
+
     </body>

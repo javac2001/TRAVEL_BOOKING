@@ -42,5 +42,15 @@ const listingSchema = new Schema({
     ]
 });
 
+listingSchema.post("findOneAndDelete",async(data)=>{
+    if(data){
+        await Review.deleteMany({
+            review : {
+                $in : data.review
+            }
+        })
+    }
+})
+
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
