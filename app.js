@@ -4,6 +4,7 @@ const port = 8080;
 const path = require('path');
 const mongoose = require('mongoose');
 const dataListingModules = require("./models/dataListingModules.js");
+const reviewModel = require("./models/reviewModels.js");
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const wrapAsync = require("./utils/wrapAsync.js");
@@ -51,6 +52,8 @@ app.get("/", (req, res) => {
     res.redirect("/stayfinder");
 });
 
+// ================================================================= Listing
+
 // INDEX
 app.get("/stayfinder", wrapAsync(async (req, res) => {
     const data = await dataListingModules.find();
@@ -73,9 +76,8 @@ app.get("/stayfinder/create", (req, res) => {
 // CREATE POST
 app.post("/stayfinder", getError,wrapAsync(async (req, res) => {
     const listingData = req.body.listing;
-    await dataListingModules.insertOne(listingData).then(() => {
-        console.log("Data inserted in DB");
-    })
+    let newListing = new dataListingModules(listingData);
+    await newListing.save();
     res.redirect("/stayfinder");
 }));
 
@@ -101,6 +103,40 @@ app.delete("/stayfinder/:id", wrapAsync(async (req, res) => {
     await dataListingModules.findByIdAndDelete(id);
     res.redirect("/stayfinder");
 }));
+
+
+// ================================================================= Reviews
+
+app.get('/stayfinder/:id/review',wrapAsync(async(req, res)=>{
+    let {id} = req.params;
+    const data = await dataListingModules.findById(id).populate('review'); 
+    if (!data) throw new ExpressError(404, 'Listing not found');
+
+    res.render('routes/review.ejs',{data});
+}))
+
+app.post('/stayfinder/:id/review', wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const data = await dataListingModules.findById(id);
+    const { rating, comments } = req.body.review;
+
+    const reviewData = new reviewModel({ rating, comments });
+    await reviewData.save();
+
+    const listing = await dataListingModules.findById(id);
+    if (!listing) throw new ExpressError(404, 'Listing not found');
+
+    listing.review.push(reviewData);
+    await listing.save();
+
+    res.redirect(`/stayfinder/${id}/show`)
+}));
+
+
+
+
+
+
 
 // 404 Route - catch all
 app.all("/:path*", (req, res, next) => {

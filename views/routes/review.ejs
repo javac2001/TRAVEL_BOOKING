@@ -1,0 +1,31 @@
+<% layout('layouts/boilerplate') -%>
+
+    <body>
+        <div class="container mt-5">
+            <h4 class="mb-3">Leave a Review</h4>
+            <form action="/stayfinder/<%= data._id %>/review" method="POST" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating: <span id="ratingValue">3</span>/5</label>
+                        <input type="range" class="form-range" min="1" max="5" step="1" id="rating"
+                            name="review[rating]" value="3" required>
+                        <div class="form-text">Slide to select your rating (1 to 5)</div>
+                    </div>
+                    <div class="invalid-feedback">Please select a rating.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comments" class="form-label">Comments</label>
+                    <textarea name="review[comments]" id="comments" rows="4" class="form-control"
+                        placeholder="Write your experience..." required></textarea>
+                    <div class="invalid-feedback">Please enter a comment.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">SUBMIT</button>
+            </form>
+            <form action="/stayfinder" method="get">
+                    <button type="submit">HOME</button>
+                </form>
+        </div>
+    </body>
