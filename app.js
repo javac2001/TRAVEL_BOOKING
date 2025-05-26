@@ -9,7 +9,7 @@ const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/expressError.js");
-const getErrorFromSchema = require("./schema.js");
+const {listingSchema, reviewSchema} = require("./schema.js");
 
 // View Engine Setup
 app.engine('ejs', engine);
@@ -30,7 +30,16 @@ app.use((req, res, next) => {
 
 // Joi Middleware function
 const getError = (req, res, next) => {
-    let {error} = getErrorFromSchema.validate(req.body);
+    let {error} = listingSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el)=> el.message).join(",");
+        throw new ExpressError(404, errMsg);
+    }else{
+        next();
+    }
+}
+const getReviewError = (req, res, next) => {
+    let {error} = reviewSchema.validate(req.body);
     if(error){
         let errMsg = error.details.map((el)=> el.message).join(",");
         throw new ExpressError(404, errMsg);
@@ -115,7 +124,7 @@ app.get('/stayfinder/:id/review',wrapAsync(async(req, res)=>{
     res.render('routes/review.ejs',{data});
 }))
 
-app.post('/stayfinder/:id/review', wrapAsync(async (req, res) => {
+app.post('/stayfinder/:id/review', getReviewError, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id);
     const { rating, comments } = req.body.review;

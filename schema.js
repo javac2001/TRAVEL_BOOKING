@@ -12,4 +12,15 @@ const schema = Joi.object({
     }).required()
 });
 
-module.exports = schema;
+const reviewSchema = Joi.object({
+    review : Joi.object({
+        rating : Joi.number().min(3).max(30).required(),
+        comments : Joi.string().required()
+    }).required()
+})
+
+
+module.exports = {
+    schema,
+    reviewSchema
+};
