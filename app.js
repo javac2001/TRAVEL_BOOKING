@@ -3,13 +3,12 @@ const app = express();
 const port = 8080;
 const path = require('path');
 const mongoose = require('mongoose');
-const dataListingModules = require("./models/dataListingModules.js");
-const reviewModel = require("./models/reviewModels.js");
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/expressError.js");
-const { schema, reviewSchema } = require("./schema.js");
+// =============================== ROUTES ===============================
+const listings = require('./routes/listing.js')
+const reviews = require('./routes/review.js')
 
 // View Engine Setup
 app.engine('ejs', engine);
@@ -28,26 +27,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Joi Middleware function
-const getError = (req, res, next) => {
-    let { error } = schema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(404, errMsg);
-    } else {
-        next();
-    }
-}
-const getReviewError = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(404, errMsg);
-    } else {
-        next();
-    }
-}
-
 // MongoDB Connection
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/StayFinder');
@@ -62,101 +41,10 @@ app.get("/", (req, res) => {
 });
 
 // ================================================================= Listing
-
-// INDEX
-app.get("/stayfinder", wrapAsync(async (req, res) => {
-    const data = await dataListingModules.find();
-    res.render("routes/index.ejs", { data });
-}));
-
-// SHOW
-app.get("/stayfinder/:id/show", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const data = await dataListingModules.findById(id).populate('review');
-    if (!data) throw new ExpressError(404, "Listing not found");
-    res.render("routes/show.ejs", { data });
-}));
-
-// CREATE FORM
-app.get("/stayfinder/create", (req, res) => {
-    res.render("routes/create.ejs");
-});
-
-// CREATE POST
-app.post("/stayfinder", getError, wrapAsync(async (req, res) => {
-    const listingData = req.body.listing;
-    let newListing = new dataListingModules(listingData);
-    await newListing.save();
-    res.redirect("/stayfinder");
-}));
-
-// EDIT FORM
-app.get("/stayfinder/:id/edit", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const data = await dataListingModules.findById(id);
-    if (!data) throw new ExpressError(404, "Listing not found for editing");
-    res.render("routes/edit.ejs", { data });
-}));
-
-// UPDATE
-app.put("/stayfinder/:id",  getError,wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const updatedData = req.body.listing;
-    await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
-    res.redirect("/stayfinder");
-}));
-
-// DELETE
-app.delete("/stayfinder/:id", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await dataListingModules.findByIdAndDelete(id);
-    res.redirect("/stayfinder");
-}));
-
+app.use('/stayfinder',listings);
 
 // ================================================================= Reviews
-
-app.get('/stayfinder/:id/review', wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const data = await dataListingModules.findById(id).populate('review');
-    if (!data) throw new ExpressError(404, 'Listing not found');
-
-    res.render('routes/review.ejs', { data });
-}))
-
-app.post('/stayfinder/:id/review', getReviewError, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const { username, rating, comments } = req.body.review;
-
-    const reviewData = new reviewModel({ username, rating, comments });
-    await reviewData.save();
-
-    const listing = await dataListingModules.findById(id);
-    if (!listing) throw new ExpressError(404, 'Listing not found');
-
-    listing.review.push(reviewData);
-    await listing.save();
-
-    res.redirect(`/stayfinder/${id}/show`)
-}));
-
-app.delete("/stayfinder/:id/review/:reviewId", getReviewError, wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-
-    await dataListingModules.findByIdAndUpdate(id, { $pull: {review : reviewId} })
-    await reviewModel.findByIdAndDelete(reviewId)
-
-    res.redirect(`/stayfinder/${id}/show`)
-}))
-
-
-
-
-
-
-
-
-
+app.use('/stayfinder/:id/review',reviews)
 
 
 
