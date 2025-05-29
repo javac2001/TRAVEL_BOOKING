@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const ExpressError = require("./utils/expressError.js");
-const session = require('express-session')
+const session = require('express-session');
+const flash = require('connect-flash');
 // =============================== ROUTES ===============================
 const listings = require('./routes/listing.js')
 const reviews = require('./routes/review.js')
@@ -24,8 +25,6 @@ let sessionOption = {
     }
 }
 
-app.use(session(sessionOption));
-
 // View Engine Setup
 app.engine('ejs', engine);
 app.set("view engine", "ejs");
@@ -36,6 +35,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
+app.use(session(sessionOption));
+app.use(flash());
+
+// Flash message display middleware
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 // Add logger here
 app.use((req, res, next) => {
@@ -65,7 +73,7 @@ app.use('/stayfinder/:id/review',reviews)
 
 
 // 404 Route - catch all
-app.all("/:path*", (req, res, next) => {
+app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found"));
 });
 

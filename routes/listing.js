@@ -5,7 +5,6 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
 const { schema } = require("../schema.js");
 
-
 // ================================ Joi Middleware function ================================
 const getError = (req, res, next) => {
     let { error } = schema.validate(req.body);
@@ -17,8 +16,6 @@ const getError = (req, res, next) => {
     }
 }
 
-
-
 // INDEX
 router.get("/", wrapAsync(async (req, res) => {
     const data = await dataListingModules.find();
@@ -29,7 +26,13 @@ router.get("/", wrapAsync(async (req, res) => {
 router.get("/:id/show", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id).populate('review');
-    if (!data) throw new ExpressError(404, "Listing not found");
+
+    if (!data) {
+        req.flash('error', 'This path doesn\'t exist');
+        res.redirect('/stayfinder'); 
+        throw new ExpressError(404, "Listing not found");
+    }
+
     res.render("routes/show.ejs", { data });
 }));
 
@@ -43,6 +46,7 @@ router.post("/", getError, wrapAsync(async (req, res) => {
     const listingData = req.body.listing;
     let newListing = new dataListingModules(listingData);
     await newListing.save();
+    req.flash('success', 'Listing created')
     res.redirect("/stayfinder");
 }));
 
@@ -50,15 +54,20 @@ router.post("/", getError, wrapAsync(async (req, res) => {
 router.get("/:id/edit", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id);
-    if (!data) throw new ExpressError(404, "Listing not found for editing");
+    if (!data) {
+        req.flash('error', 'This path doesn\'t exist');
+        res.redirect('/stayfinder'); 
+        throw new ExpressError(404, "Listing not found");
+    }
     res.render("routes/edit.ejs", { data });
 }));
 
 // UPDATE
-router.put("/:id",  getError,wrapAsync(async (req, res) => {
+router.put("/:id", getError, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body.listing;
     await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
+    req.flash('success', 'Listing update')
     res.redirect("/stayfinder");
 }));
 
@@ -66,6 +75,7 @@ router.put("/:id",  getError,wrapAsync(async (req, res) => {
 router.delete("/:id", wrapAsync(async (req, res) => {
     const { id } = req.params;
     await dataListingModules.findByIdAndDelete(id);
+    req.flash('error', 'Listing deleted')
     res.redirect("/stayfinder");
 }));
 
