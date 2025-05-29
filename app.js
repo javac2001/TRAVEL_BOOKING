@@ -6,9 +6,25 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const ExpressError = require("./utils/expressError.js");
+const session = require('express-session')
 // =============================== ROUTES ===============================
 const listings = require('./routes/listing.js')
 const reviews = require('./routes/review.js')
+
+// Express-session setup
+
+let sessionOption = {
+    secret : "mysecretkey",
+    resave : false,
+    saveUninitialized : true,
+    cookie : {
+        expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge : 7 * 24 * 60 * 60 * 1000,
+        httpOnly : true
+    }
+}
+
+app.use(session(sessionOption));
 
 // View Engine Setup
 app.engine('ejs', engine);
