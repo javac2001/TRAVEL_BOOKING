@@ -8,12 +8,15 @@ const engine = require('ejs-mate');
 const ExpressError = require("./utils/expressError.js");
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require("./models/userModel.js")
 // =============================== ROUTES ===============================
 const listings = require('./routes/listing.js')
 const reviews = require('./routes/review.js')
+const userAuth = require('./routes/user.js')
 
 // Express-session setup
-
 let sessionOption = {
     secret : "mysecretkey",
     resave : false,
@@ -37,6 +40,14 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(session(sessionOption));
 app.use(flash());
+
+// Passport middleware setup
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Flash message display middleware
 app.use((req, res, next) => {
@@ -70,6 +81,8 @@ app.use('/stayfinder',listings);
 // ================================================================= Reviews
 app.use('/stayfinder/:id/review',reviews)
 
+// ================================================================= Login & SignUp
+app.use('/stayfinder', userAuth)
 
 
 // 404 Route - catch all
