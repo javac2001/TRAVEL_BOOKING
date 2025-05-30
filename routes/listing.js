@@ -4,7 +4,7 @@ const dataListingModules = require("../models/dataListingModules.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
 const { schema } = require("../schema.js");
-const isAuthenticate = require("../utils/middleware.js")
+const {isAuthenticate} = require("../utils/middleware.js")
 
 // ================================ Joi Middleware function ================================
 const getError = (req, res, next) => {

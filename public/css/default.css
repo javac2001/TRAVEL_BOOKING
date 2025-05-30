@@ -32,6 +32,9 @@ body {
 form{
     display: inline !important;
 }
+a{
+    text-decoration: none !important;
+}
 button {
     background-color: var(--button-color)!important;
     outline: none !important;
