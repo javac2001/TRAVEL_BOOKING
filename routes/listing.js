@@ -4,6 +4,7 @@ const dataListingModules = require("../models/dataListingModules.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
 const { schema } = require("../schema.js");
+const isAuthenticate = require("../utils/middleware.js")
 
 // ================================ Joi Middleware function ================================
 const getError = (req, res, next) => {
@@ -37,7 +38,7 @@ router.get("/:id/show", wrapAsync(async (req, res) => {
 }));
 
 // CREATE FORM
-router.get("/create", (req, res) => {
+router.get("/create",isAuthenticate,(req, res) => {
     res.render("routes/create.ejs");
 });
 
@@ -51,7 +52,7 @@ router.post("/", getError, wrapAsync(async (req, res) => {
 }));
 
 // EDIT FORM
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit",isAuthenticate, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id);
     if (!data) {
@@ -72,7 +73,7 @@ router.put("/:id", getError, wrapAsync(async (req, res) => {
 }));
 
 // DELETE
-router.delete("/:id", wrapAsync(async (req, res) => {
+router.delete("/:id",isAuthenticate, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await dataListingModules.findByIdAndDelete(id);
     req.flash('error', 'Listing deleted')

@@ -3,6 +3,7 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const User = require('../models/userModel.js');
 const passport = require('passport');
+const { route } = require('./listing.js');
 
 
 // ============================================= SIGNUP
@@ -25,7 +26,6 @@ router.post('/signup', wrapAsync(async (req, res) => {
 }));
 
 // ============================================= LOGIN
-
 router.get('/login', (req, res) => {
     res.render('users/login.ejs')
 })
@@ -34,6 +34,17 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/stayfi
     req.flash("success", "Welcome to Stay Finder :)")
     res.redirect('/stayfinder')
 });
+
+// ============================================= LOGOUT
+router.get('/logout',(req, res, next)=>{
+    req.logout((err)=>{
+        if(err){
+            next(err)
+        }
+        req.flash("success", "Successfully logout")
+        res.redirect('/stayfinder')
+    })
+} )
 
 
 module.exports = router;
