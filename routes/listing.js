@@ -7,6 +7,7 @@ const {isAuthenticate, getError, isOwner} = require("../utils/middleware.js")
 
 // INDEX
 router.get("/", wrapAsync(async (req, res) => {
+    console.log(req.user);
     const data = await dataListingModules.find();
     res.render("routes/index.ejs", { data });
 }));

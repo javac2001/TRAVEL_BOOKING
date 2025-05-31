@@ -4,7 +4,9 @@
         <div class="travel-card">
             <img src="<%= data.image %>" alt="Travel Destination" class="travel-image">
             <div class="travel-content">
-                <p>owned by <strong><%= data.owner.username %></strong></p>
+                <p>owned by <strong>
+                        <%= data.owner.username %>
+                    </strong></p>
                 <h1 class="travel-title">
                     <%= data.title %>
                 </h1>
@@ -26,46 +28,44 @@
                     <form action="/stayfinder/<%= data._id %>?_method=DELETE" method="post">
                         <button type="submit">DELETE</button>
                     </form>
-                <% } %>
-                <form action="/stayfinder" method="get">
-                    <button type="submit">HOME</button>
-                </form>
-                <form action="/stayfinder/<%= data._id %>/review" method="get">
-                    <button type="submit">REVIEW</button>
-                </form>
+                    <% } %>
             </div>
-
         </div>
-
         <hr>
+        <% if(currentUser){ %>
+            <a href="/stayfinder/<%= data._id %>/review">Leave a Review</a>
+            <% } %>
+                <div class="container mt-5 review-section">
+                    <h2 class="mb-4">Reviews</h2>
+                    <% if (data.review && data.review.length> 0) { %>
+                        <div class="row row-cols-1 g-4">
+                            <% data.review.forEach(function(review) { %>
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <%= review.username %>
+                                            </h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review.rating %>/5
+                                            </h6>
+                                            <p class="card-text">
+                                                <%= review.comments %>
+                                            </p>
 
-        <div class="container mt-5 review-section">
-    <h2 class="mb-4">Reviews</h2>
-
-    <% if (data.review && data.review.length > 0) { %>
-        <div class="row row-cols-1 g-4">
-            <% data.review.forEach(function(review) { %>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= review.username %></h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review.rating %>/5</h6>
-                            <p class="card-text"><%= review.comments %></p>
-                            
-                            <form action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
-                            </form>
+                                            <form
+                                                action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
+                                                method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
                         </div>
-                    </div>
+                        <% } else { %>
+                            <div class="alert alert-info" role="alert">
+                                No reviews yet. Be the first to review!
+                            </div>
+                            <% } %>
                 </div>
-            <% }); %>
-        </div>
-    <% } else { %>
-        <div class="alert alert-info" role="alert">
-            No reviews yet. Be the first to review!
-        </div>
-    <% } %>
-</div>
-
-
     </body>

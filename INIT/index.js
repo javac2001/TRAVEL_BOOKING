@@ -12,7 +12,8 @@ async function initialiseInDatabase(arr) {
     try {
         await dataListingModules.deleteMany({}).then(()=>{console.log("Clear in DB");}).catch((err)=>{console.log(err);});
         let data = arr.map((obj)=>{
-            return {...obj, owner : "6839cff5282ac1869d569307"};
+            return {...obj, owner : '683a16566f92cae048dbe0b8'};
+            // return {...obj, owner : "6839cff5282ac1869d569307"};
         });
         await dataListingModules.insertMany(data).then(()=>{console.log("Insert bulk data in Database");}).catch((err)=>{console.log(err);})
     } catch (error) {
