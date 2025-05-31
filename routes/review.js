@@ -4,19 +4,7 @@ const dataListingModules = require("../models/dataListingModules.js");
 const reviewModel = require("../models/reviewModels.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
-const { reviewSchema } = require("../schema.js");
-
-
-// ================================ Joi Middleware function ================================
-const getReviewError = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(404, errMsg);
-    } else {
-        next();
-    }
-}
+const {getReviewError} = require("../utils/middleware.js")
 
 
 // GET review page

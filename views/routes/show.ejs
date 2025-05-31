@@ -19,13 +19,14 @@
                 </p>
                 <p class="travel-price">&#x20B9;<%= data.price.toLocaleString("en-IN")%> /Night
                 </p>
-
-                <form action="/stayfinder/<%= data._id %>/edit" method="get">
-                    <button type="submit">EDIT</button>
-                </form>
-                <form action="/stayfinder/<%= data._id %>?_method=DELETE" method="post">
-                    <button type="submit">DELETE</button>
-                </form>
+                <% if(currentUser && currentUser._id.equals(data.owner._id) ){ %>
+                    <form action="/stayfinder/<%= data._id %>/edit" method="get">
+                        <button type="submit">EDIT</button>
+                    </form>
+                    <form action="/stayfinder/<%= data._id %>?_method=DELETE" method="post">
+                        <button type="submit">DELETE</button>
+                    </form>
+                <% } %>
                 <form action="/stayfinder" method="get">
                     <button type="submit">HOME</button>
                 </form>

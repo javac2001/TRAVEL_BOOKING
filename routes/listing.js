@@ -3,19 +3,7 @@ const router = express.Router({mergeParams : true});
 const dataListingModules = require("../models/dataListingModules.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
-const { schema } = require("../schema.js");
-const {isAuthenticate} = require("../utils/middleware.js")
-
-// ================================ Joi Middleware function ================================
-const getError = (req, res, next) => {
-    let { error } = schema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(404, errMsg);
-    } else {
-        next();
-    }
-}
+const {isAuthenticate, getError} = require("../utils/middleware.js")
 
 // INDEX
 router.get("/", wrapAsync(async (req, res) => {
@@ -27,6 +15,7 @@ router.get("/", wrapAsync(async (req, res) => {
 router.get("/:id/show", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id).populate('review').populate('owner');
+    console.log(req.user);
     console.log(data);
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
