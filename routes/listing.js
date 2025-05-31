@@ -15,7 +15,14 @@ router.get("/", wrapAsync(async (req, res) => {
 // SHOW
 router.get("/:id/show", wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const data = await dataListingModules.findById(id).populate('review').populate('owner');
+    const data = await dataListingModules.findById(id)
+    .populate({
+        path : 'review',
+        populate : {
+            path : 'owner'
+        }
+    })
+    .populate('owner');
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
         res.redirect('/stayfinder'); 

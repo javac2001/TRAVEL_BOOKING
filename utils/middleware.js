@@ -1,6 +1,7 @@
 const ExpressError = require("../utils/expressError.js");
 const { schema, reviewSchema } = require("../utils/schema.js");
 const dataListingModules = require("../models/dataListingModules.js");
+const reviewModules = require("../models/reviewModels.js");
 
 // ================================== Verify User(Passport) ==================================
 module.exports.isAuthenticate = (req, res, next) => {
@@ -22,7 +23,6 @@ module.exports.userRedirectUrl = (req, res, next) => {
 }
 
 // ================================ Joi Middleware function ================================
-
 // Listing
 module.exports.getError = (req, res, next) => {
     let { error } = schema.validate(req.body);
@@ -45,12 +45,21 @@ module.exports.getReviewError = (req, res, next) => {
 }
 
 // ================================= Implementation Authentication =================================
-
 module.exports.isOwner = async(req, res, next)=>{
-    console.log(req.route.path);
     let {id} = req.params;
     let listing = await dataListingModules.findById(id);
     if(!res.locals.currentUser.equals(listing.owner)){
+        req.flash("error", "You are not the Owner");
+        return res.redirect(`/stayfinder/${id}/show`)
+    }
+    next()
+}
+
+// ================================= Review Autheraization =================================
+module.exports.isReviewOwner = async(req, res, next)=>{
+    let { id, reviewId } = req.params;
+    let review = await reviewModules.findById(reviewId);
+    if(!res.locals.currentUser._id.equals(review.owner)){
         req.flash("error", "You are not the Owner");
         return res.redirect(`/stayfinder/${id}/show`)
     }

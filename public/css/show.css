@@ -1,3 +1,12 @@
+.btn-as-link {
+    background: none !important;
+    border: none;
+    color: #007bff !important; /* Bootstrap's primary link color */
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+}
+
 .travel-card {
   max-width: 800px;
   margin: 30px auto;

@@ -44,19 +44,19 @@
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                             <h5 class="card-title">
-                                                <%= review.username %>
+                                                @<%= review.owner.username %>
                                             </h5>
                                             <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review.rating %>/5
                                             </h6>
                                             <p class="card-text">
                                                 <%= review.comments %>
                                             </p>
+                                            <% if(currentUser && currentUser._id.equals(review.owner._id)){ %>
+                                                <form action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE" method="post">
+                                                    <button type="submit" class="btn-as-link">DELETE</button>
+                                                </form>
 
-                                            <form
-                                                action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
-                                                method="POST" class="d-inline">
-                                                <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
-                                            </form>
+                                            <% } %>
                                         </div>
                                     </div>
                                 </div>

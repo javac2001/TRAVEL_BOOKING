@@ -13,7 +13,6 @@ const schema = Joi.object({
 
 const reviewSchema = Joi.object({
     review : Joi.object({
-        username : Joi.string().required(),
         rating : Joi.number().min(1).max(5).required(),
         comments : Joi.string().required()
     })
