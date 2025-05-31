@@ -1,6 +1,6 @@
 const ExpressError = require("../utils/expressError.js");
-const { schema, reviewSchema } = require("../schema.js");
-
+const { schema, reviewSchema } = require("../utils/schema.js");
+const dataListingModules = require("../models/dataListingModules.js");
 
 // ================================== Verify User(Passport) ==================================
 module.exports.isAuthenticate = (req, res, next) => {
@@ -42,4 +42,17 @@ module.exports.getReviewError = (req, res, next) => {
     } else {
         next();
     }
+}
+
+// ================================= Implementation Authentication =================================
+
+module.exports.isOwner = async(req, res, next)=>{
+    console.log(req.route.path);
+    let {id} = req.params;
+    let listing = await dataListingModules.findById(id);
+    if(!res.locals.currentUser.equals(listing.owner)){
+        req.flash("error", "You are not the Owner");
+        return res.redirect(`/stayfinder/${id}/show`)
+    }
+    next()
 }
