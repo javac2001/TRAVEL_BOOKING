@@ -26,8 +26,8 @@ router.get("/", wrapAsync(async (req, res) => {
 // SHOW
 router.get("/:id/show", wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const data = await dataListingModules.findById(id).populate('review');
-
+    const data = await dataListingModules.findById(id).populate('review').populate('owner');
+    console.log(data);
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
         res.redirect('/stayfinder'); 
@@ -46,6 +46,7 @@ router.get("/create",isAuthenticate,(req, res) => {
 router.post("/", getError, wrapAsync(async (req, res) => {
     const listingData = req.body.listing;
     let newListing = new dataListingModules(listingData);
+    newListing.owner = req.user._id
     await newListing.save();
     req.flash('success', 'Listing created')
     res.redirect("/stayfinder");
