@@ -18,7 +18,7 @@
                 </p>
                 <p class="travel-description">
                     <textarea><%= data.description %></textarea>
-                    
+
                 </p>
                 <p class="travel-price">&#x20B9;<%= data.price.toLocaleString("en-IN")%> /Night
                 </p>
@@ -47,17 +47,18 @@
                                             <h5 class="card-title">
                                                 @<%= review.owner.username %>
                                             </h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review.rating %>/5
-                                            </h6>
+                                            <p class="starability-result" data-rating="<%= review.rating %>"></p>
                                             <p class="card-text">
                                                 <%= review.comments %>
                                             </p>
                                             <% if(currentUser && currentUser._id.equals(review.owner._id)){ %>
-                                                <form action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE" method="post">
+                                                <form
+                                                    action="/stayfinder/<%= data._id %>/review/<%= review._id %>?_method=DELETE"
+                                                    method="post">
                                                     <button type="submit" class="btn-as-link">DELETE</button>
                                                 </form>
 
-                                            <% } %>
+                                                <% } %>
                                         </div>
                                     </div>
                                 </div>
