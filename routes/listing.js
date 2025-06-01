@@ -1,80 +1,29 @@
 const express = require('express');
 const router = express.Router({mergeParams : true});
-const dataListingModules = require("../models/dataListingModules.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/expressError.js");
 const {isAuthenticate, getError, isOwner} = require("../utils/middleware.js")
+const listingController = require('../controller/listing.js');
 
 // INDEX
-router.get("/", wrapAsync(async (req, res) => {
-    console.log(req.user);
-    const data = await dataListingModules.find();
-    res.render("routes/index.ejs", { data });
-}));
+router.get("/", wrapAsync(listingController.indexingRoutePath));
 
 // SHOW
-router.get("/:id/show", wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const data = await dataListingModules.findById(id)
-    .populate({
-        path : 'review',
-        populate : {
-            path : 'owner'
-        }
-    })
-    .populate('owner');
-    if (!data) {
-        req.flash('error', 'This path doesn\'t exist');
-        res.redirect('/stayfinder'); 
-        throw new ExpressError(404, "Listing not found");
-    }
-
-    res.render("routes/show.ejs", { data });
-}));
+router.get("/:id/show", wrapAsync(listingController.showRoutePath));
 
 // CREATE FORM
-router.get("/create",isAuthenticate,(req, res) => {
-    res.render("routes/create.ejs");
-});
+router.get("/create",isAuthenticate,(req, res) => { res.render("routes/create.ejs") });
 
 // CREATE POST
-router.post("/", getError, wrapAsync(async (req, res) => {
-    const listingData = req.body.listing;
-    let newListing = new dataListingModules(listingData);
-    newListing.owner = req.user._id
-    await newListing.save();
-    req.flash('success', 'Listing created')
-    res.redirect("/stayfinder");
-}));
+router.post("/", getError, wrapAsync(listingController.createRoutePath));
 
 // EDIT FORM
-router.get("/:id/edit",isAuthenticate, isOwner,wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const data = await dataListingModules.findById(id);
-    if (!data) {
-        req.flash('error', 'This path doesn\'t exist');
-        res.redirect('/stayfinder'); 
-        throw new ExpressError(404, "Listing not found");
-    }
-    res.render("routes/edit.ejs", { data });
-}));
+router.get("/:id/edit",isAuthenticate, isOwner,wrapAsync(listingController.editRoutePath));
 
 // UPDATE
-router.put("/:id", getError,isAuthenticate, isOwner,wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const updatedData = req.body.listing;
-    await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
-    req.flash('success', 'Listing update')
-    res.redirect("/stayfinder");
-}));
+router.put("/:id", getError,isAuthenticate, isOwner,wrapAsync(listingController.updateRoutePath));
 
 // DELETE
-router.delete("/:id",isAuthenticate, isOwner,wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await dataListingModules.findByIdAndDelete(id);
-    req.flash('error', 'Listing deleted')
-    res.redirect("/stayfinder");
-}));
+router.delete("/:id",isAuthenticate, isOwner,wrapAsync(listingController.deleteRoutePath));
 
 
 module.exports = router;

@@ -45,6 +45,17 @@
   margin: 15px 0;
   color: #555;
   line-height: 1.6;
+  overflow-wrap: break-word;
+}
+.travel-description textarea{
+  width: 100%;
+  height: 50px;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  overflow: auto;            
+  scrollbar-width: none;      
+  -ms-overflow-style: none;   
 }
 
 /* Responsive Design */
