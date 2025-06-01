@@ -5,11 +5,11 @@ const reviewController = require('../controller/review.js');
 const {getReviewError,isAuthenticate,isReviewOwner} = require("../utils/middleware.js")
 
 
-// GET review page
-router.get('/', isAuthenticate,wrapAsync(reviewController.getReviewForm))
-
-// POST reviews
-router.post('/', getReviewError, isAuthenticate, wrapAsync(reviewController.postReview));
+// route -> GET and POST
+router
+.route('/')
+.get(isAuthenticate,wrapAsync(reviewController.getReviewForm))
+.post(getReviewError, isAuthenticate, wrapAsync(reviewController.postReview));
 
 // DELETE reviews
 router.delete("/:reviewId", isAuthenticate,isReviewOwner, getReviewError,wrapAsync(reviewController.deleteReview))
