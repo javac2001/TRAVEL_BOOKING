@@ -3,8 +3,9 @@ const router = express.Router({mergeParams : true});
 const wrapAsync = require("../utils/wrapAsync.js");
 const {isAuthenticate, getError, isOwner} = require("../utils/middleware.js")
 const listingController = require('../controller/listing.js');
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' });
+const multer  = require('multer');
+const {storage} = require('../cloudSetup.js');
+const upload = multer({ storage });
 
 
 // route -> INDEX and POST
