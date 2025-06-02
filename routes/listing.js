@@ -12,10 +12,7 @@ const upload = multer({ storage });
 router
 .route("/")
 .get(wrapAsync(listingController.indexingRoutePath))
-// .post(getError, wrapAsync(listingController.createRoutePath));
-.post(upload.single('listing[image]'),(req, res)=>{
-    res.send(req.file);
-});
+.post(upload.single('listing[image]'), isAuthenticate, getError, wrapAsync(listingController.createRoutePath));
 
 // SHOW
 router.get("/:id/show", wrapAsync(listingController.showRoutePath));

@@ -32,8 +32,12 @@ module.exports.showRoutePath = async (req, res) => {
 // CREATE-path
 module.exports.createRoutePath = async (req, res) => {
     const listingData = req.body.listing;
+    let url = req.file.path;
+    let filename = req.file.filename;
     let newListing = new dataListingModules(listingData);
     newListing.owner = req.user._id
+    newListing.image.url = url;
+    newListing.image.filename = filename;
     await newListing.save();
     req.flash('success', 'Listing created')
     res.redirect("/stayfinder");
