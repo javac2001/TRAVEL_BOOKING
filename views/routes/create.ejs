@@ -7,7 +7,7 @@
           <h2 class="text-center mb-4">Post a Travel Place</h2>
 
           <!-- POST FORM -->
-          <form action="/stayfinder" method="POST" novalidate class="needs-validation">
+          <form action="/stayfinder" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="title" class="form-label">Place Title</label>
               <input type="text" class="form-control" id="title" name="listing[title]" placeholder="e.g. Eiffel Tower"
@@ -24,10 +24,17 @@
               <div class="invalid-feedback">Please provide a description of the place.</div>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="image" class="form-label">Image URL</label>
               <input type="url" class="form-control" id="image" name="listing[image]"
                 placeholder="https://example.com/image.jpg">
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter a valid image URL.</div>
+            </div> -->
+            <div class="mb-3">
+              <!-- MULTER -->
+              <label for="image" class="form-label">Upload Image</label>
+              <input type="file" class="form-control" id="image" name="listing[image]">
               <div class="valid-feedback">Looks good!</div>
               <div class="invalid-feedback">Please enter a valid image URL.</div>
             </div>
