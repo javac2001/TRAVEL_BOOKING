@@ -7,7 +7,7 @@
           <h2 class="text-center mb-4">Edit Travel Place</h2>
 
           <!-- PUT FORM -->
-          <form action="/stayfinder/<%= data._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
+          <form action="/stayfinder/<%= data._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="title" class="form-label">Place Title</label>
               <input type="text" class="form-control" id="title" name="listing[title]" value="<%= data.title %>"
@@ -25,9 +25,13 @@
             </div>
 
             <div class="mb-3">
+              <p>Original image</p>
+              <img src="<%= newImgData %>">
+            </div>
+
+            <div class="mb-3">
               <label for="image" class="form-label">Image URL</label>
-              <input type="url" class="form-control" id="image" name="listing[image]" value="<%= data.image %>"
-                required>
+              <input type="file" class="form-control" id="image" name="listing[image]">
               <div class="valid-feedback">Looks good!</div>
               <div class="invalid-feedback">Please enter a valid image URL.</div>
             </div>

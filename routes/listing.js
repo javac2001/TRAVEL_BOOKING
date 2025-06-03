@@ -26,7 +26,7 @@ router.get("/:id/edit",isAuthenticate, isOwner,wrapAsync(listingController.editR
 // route -> UPDATE and DELETE
 router
 .route("/:id")
-.put(getError,isAuthenticate, isOwner,wrapAsync(listingController.updateRoutePath))
+.put(upload.single('listing[image]'),getError,isAuthenticate, isOwner,wrapAsync(listingController.updateRoutePath))
 .delete(isAuthenticate, isOwner,wrapAsync(listingController.deleteRoutePath));
 
 

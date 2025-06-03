@@ -13,16 +13,16 @@ module.exports.indexingRoutePath = async (req, res) => {
 module.exports.showRoutePath = async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id)
-    .populate({
-        path : 'review',
-        populate : {
-            path : 'owner'
-        }
-    })
-    .populate('owner');
+        .populate({
+            path: 'review',
+            populate: {
+                path: 'owner'
+            }
+        })
+        .populate('owner');
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
-        res.redirect('/stayfinder'); 
+        res.redirect('/stayfinder');
         throw new ExpressError(404, "Listing not found");
     }
 
@@ -36,8 +36,7 @@ module.exports.createRoutePath = async (req, res) => {
     let filename = req.file.filename;
     let newListing = new dataListingModules(listingData);
     newListing.owner = req.user._id
-    newListing.image.url = url;
-    newListing.image.filename = filename;
+    newListing.image = { url, filename };
     await newListing.save();
     req.flash('success', 'Listing created')
     res.redirect("/stayfinder");
@@ -47,21 +46,38 @@ module.exports.createRoutePath = async (req, res) => {
 module.exports.editRoutePath = async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id);
+    let newImgData = data.image.url.replace('/upload','/upload/c_fill,h_200,w_300')
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
-        res.redirect('/stayfinder'); 
+        res.redirect('/stayfinder');
         throw new ExpressError(404, "Listing not found");
     }
-    res.render("routes/edit.ejs", { data });
+    res.render("routes/edit.ejs", { data, newImgData });
 }
 
 // UPDATE-path
 module.exports.updateRoutePath = async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body.listing;
-    await dataListingModules.findByIdAndUpdate(id, updatedData, { runValidators: true, new: true });
-    req.flash('success', 'Listing update')
-    res.redirect("/stayfinder");
+
+    if (req.file) {
+        const { path: url, filename } = req.file;
+        updatedData.image = { url, filename };
+    }
+
+    const updatedListing = await dataListingModules.findByIdAndUpdate(
+        id,
+        updatedData,
+        { runValidators: true, new: true }
+    );
+
+    if (!updatedListing) {
+        req.flash('error', 'Listing not found');
+        return res.redirect('/stayfinder');
+    }
+
+    req.flash('success', 'Listing updated');
+    res.redirect('/stayfinder');
 }
 
 // DELETE-path
