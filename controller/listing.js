@@ -46,13 +46,12 @@ module.exports.createRoutePath = async (req, res) => {
 module.exports.editRoutePath = async (req, res) => {
     const { id } = req.params;
     const data = await dataListingModules.findById(id);
-    let newImgData = data.image.url.replace('/upload','/upload/c_fill,h_200,w_300')
     if (!data) {
         req.flash('error', 'This path doesn\'t exist');
         res.redirect('/stayfinder');
         throw new ExpressError(404, "Listing not found");
     }
-    res.render("routes/edit.ejs", { data, newImgData });
+    res.render("routes/edit.ejs", { data });
 }
 
 // UPDATE-path
