@@ -41,7 +41,8 @@ module.exports.createRoutePath = async (req, res) => {
     let newListing = new dataListingModules(listingData);
     newListing.owner = req.user._id
     newListing.image = { url, filename };
-    console.log("Coordinates:", data.features[0].geometry); // [lng, lat]
+    newListing.geometry = data.features[0].geometry; // [lng, lat]
+    console.log("Coordinates:", data.features[0].geometry); 
     await newListing.save();
     req.flash('success', 'Listing created')
     res.redirect("/stayfinder");
