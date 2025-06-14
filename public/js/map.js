@@ -9,11 +9,7 @@ const map = new maptilersdk.Map({
 
 function createCustomImageMarker() {
   const el = document.createElement('div');
-  el.className = 'custom-marker' 
-  // el.style.backgroundImage = 'url("/img/mapLogo.png")';
-  // el.style.width = '40px';
-  // el.style.height = '50px';
-  // el.style.backgroundSize = 'cover';
+  el.className = 'custom-marker'
   return el;
 }
 
@@ -24,9 +20,5 @@ const marker = new maptilersdk.Marker(
   }
 )
   .setLngLat(mapLocation.geometry.coordinates)
-  .setPopup(
-    new maptilersdk.Popup({ offset: 25 })
-      .setHTML("<strong>Kolkata</strong><br>City of Joy")
-  )
   .addTo(map);
 

@@ -17,15 +17,16 @@
 }
 
 .maplibregl-ctrl-group {
-  box-shadow: 0px !important;
-  border-radius: 8px;
-  overflow: hidden;
+  box-shadow: 0px 0px 5px !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
   background: transparent !important;
 }
 
 .maplibregl-ctrl-zoom-in,
 .maplibregl-ctrl-zoom-out,
-.maplibregl-ctrl-compass{
+.maplibregl-ctrl-compass,
+.maplibregl-ctrl-geolocate{
   background-color: transparent !important;
   color: #fff !important;
   font-size: 20px !important;
@@ -38,5 +39,9 @@
 .maplibregl-ctrl-zoom-out:hover,
 .maplibregl-ctrl-compass:hover {
   transition: none !important;
+  width: 50px !important;
+}
+
+.maplibregl-ctrl-geolocate:hover{
   width: 50px !important;
 }
