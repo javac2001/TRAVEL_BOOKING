@@ -11,6 +11,32 @@
 .custom-marker {
   background-size: cover;
   width: 40px;
-  height: 40px;
+  height: 50px;
   cursor: pointer;
+  background-image: url('/img/mapLogo.png');
+}
+
+.maplibregl-ctrl-group {
+  box-shadow: 0px !important;
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.maplibregl-ctrl-zoom-in,
+.maplibregl-ctrl-zoom-out,
+.maplibregl-ctrl-compass{
+  background-color: transparent !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  border-radius: 4px !important;
+  transition: none !important;
+  width: 50px  !important;
+}
+
+.maplibregl-ctrl-zoom-in:hover,
+.maplibregl-ctrl-zoom-out:hover,
+.maplibregl-ctrl-compass:hover {
+  transition: none !important;
+  width: 50px !important;
 }

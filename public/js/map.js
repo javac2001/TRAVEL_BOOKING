@@ -6,10 +6,23 @@ const map = new maptilersdk.Map({
   zoom: 15 // starting zoom
 });
 
-const el = document.createElement('div');
-el.className = 'custom-marker';
 
-const marker = new maptilersdk.Marker()
+function createCustomImageMarker() {
+  const el = document.createElement('div');
+  el.className = 'custom-marker' 
+  // el.style.backgroundImage = 'url("/img/mapLogo.png")';
+  // el.style.width = '40px';
+  // el.style.height = '50px';
+  // el.style.backgroundSize = 'cover';
+  return el;
+}
+
+const marker = new maptilersdk.Marker(
+  {
+    color: 'transparent', // hide default blue
+    element: createCustomImageMarker()
+  }
+)
   .setLngLat(mapLocation.geometry.coordinates)
   .setPopup(
     new maptilersdk.Popup({ offset: 25 })
