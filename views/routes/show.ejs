@@ -1,8 +1,10 @@
 <% layout('layouts/boilerplate') -%>
-<script>
-    let cloudMapToken = "<%= process.env.CLOUD_MAP_TOKEN %>"
-</script>
+
     <body>
+        <script>
+            let cloudMapToken = "<%= process.env.CLOUD_MAP_TOKEN %>"
+            let mapLocation = <%- JSON.stringify(data) %>
+        </script>
         <div class="travel-card">
             <img src="<%= data.image.url %>" alt="Travel Destination" class="travel-image">
             <div class="travel-content">
@@ -77,5 +79,5 @@
                 <div id="map"></div>
 
 
-                
+
     </body>

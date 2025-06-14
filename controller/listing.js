@@ -26,6 +26,7 @@ module.exports.showRoutePath = async (req, res) => {
         throw new ExpressError(404, "Listing not found");
     }
 
+    console.log(data);
     res.render("routes/show.ejs", { data });
 }
 
